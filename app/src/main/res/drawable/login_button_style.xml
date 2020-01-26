@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:color="@color/loginButtonPressed"
+    tools:targetApi="lollipop">
+
+
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/loginButtonPressed"/>
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="@color/loginButtonDisable"/>
+            <corners android:radius="10dp"/>
+
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="@color/loginButtonColor"/>
+            <corners android:radius="10dp"/>
+
+        </shape>
+    </item>
+
+</ripple>

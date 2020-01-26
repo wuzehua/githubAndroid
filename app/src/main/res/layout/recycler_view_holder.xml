@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/viewHolderTextView"
+        android:layout_weight="1.0"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:textSize="14sp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:text="info"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/login_button_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
