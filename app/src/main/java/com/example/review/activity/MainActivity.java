@@ -1,18 +1,25 @@
-package com.example.review;
+package com.example.review.activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.os.Bundle;
 import android.widget.RadioGroup;
+
+import com.example.review.R;
+import com.example.review.api.service.GithubService;
+import com.example.review.fragment.LoginFragment;
+import com.example.review.fragment.RecyclerFragment;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private Fragment mCurrentFragment;
+    private Retrofit mRetrofit;
+    private GithubService mApiGithubService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final LoginFragment loginFragment = new LoginFragment();
-        final RecyclerFragment recyclerFragment = new RecyclerFragment();
+        final RecyclerFragment recyclerFragment = new RecyclerFragment(getApiService());
 
         mCurrentFragment = recyclerFragment;
 
@@ -67,6 +74,22 @@ public class MainActivity extends AppCompatActivity {
             mCurrentFragment = fragment;
         }
     }
+
+    private GithubService getApiService(){
+        if(mRetrofit == null){
+            mRetrofit = new Retrofit.Builder()
+                    .baseUrl(GithubService.GITHUB_API_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+
+        if(mApiGithubService == null){
+            mApiGithubService = mRetrofit.create(GithubService.class);
+        }
+
+        return mApiGithubService;
+    }
+
 
 
 }

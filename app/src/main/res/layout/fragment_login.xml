@@ -23,9 +23,10 @@
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/loginButton"
+        android:textAllCaps="false"
+        android:id="@+id/loginButtonFragment"
         android:textSize="20sp"
-        android:textColor="@android:color/white"
+        android:textColor="@color/loginTextColor"
         android:text="Login"
         android:layout_marginTop="20dp"
         android:background="@drawable/login_button_style"
