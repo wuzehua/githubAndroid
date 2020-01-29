@@ -10,4 +10,5 @@
     <color name="loginButtonPressed">#999999</color>
     <color name="publicTagColor">#4CAF50</color>
     <color name="privateTagColor">#F44336</color>
+    <color name="statBarColor">#303030</color>
 </resources>

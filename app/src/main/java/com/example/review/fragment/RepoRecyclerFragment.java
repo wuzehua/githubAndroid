@@ -102,7 +102,7 @@ public class RepoRecyclerFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
                 if(response.body() != null && response.isSuccessful()){
-                    Toast.makeText(getContext(), "Refresh finish", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "Refresh finish", Toast.LENGTH_SHORT).show();
                     mAdapter.setData(response.body());
                     mAdapter.notifyDataSetChanged();
                     mRefreshLayout.setRefreshing(false);

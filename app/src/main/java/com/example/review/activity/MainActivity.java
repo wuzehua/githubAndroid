@@ -1,12 +1,19 @@
 package com.example.review.activity;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
 
 import com.example.review.R;
@@ -14,6 +21,9 @@ import com.example.review.api.service.GithubService;
 import com.example.review.fragment.BaseFragment;
 import com.example.review.fragment.LoginFragment;
 import com.example.review.fragment.RepoRecyclerFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         final LoginFragment loginFragment = new LoginFragment();
         final BaseFragment baseFragment = new BaseFragment(getApiService());
 
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(R.color.statBarColor, getTheme()));
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         mCurrentFragment = baseFragment;
 
         getSupportFragmentManager()
@@ -37,22 +52,25 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.mainFragmentLayout, baseFragment)
                 .commit();
 
-        RadioGroup tabs = findViewById(R.id.bottomNavigate);
-        tabs.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        BottomNavigationView bottomNavigate = findViewById(R.id.bottomNavigate);
+        bottomNavigate.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.recyclerTab:{
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.homeNavigate:{
                         switchFragment(baseFragment);
                         break;
                     }
-                    case R.id.loginTab:{
+
+                    case R.id.meNavigate:{
                         switchFragment(loginFragment);
                         break;
                     }
                 }
+                return true;
             }
         });
+
 
     }
 

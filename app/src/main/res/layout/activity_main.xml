@@ -3,47 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
     <FrameLayout
-        android:layout_weight="1.0"
         android:id="@+id/mainFragmentLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1.0"
         />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:background="@android:color/black"
+        android:background="@color/cardview_dark_background"
+        android:id="@+id/bottomNavigate"
         android:layout_width="match_parent"
-        android:layout_height="60dp" >
+        android:layout_height="wrap_content"
+        app:menu="@menu/menu_main"/>
 
-        <RadioGroup
-            android:id="@+id/bottomNavigate"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RadioButton
-                android:id="@+id/recyclerTab"
-                android:textColor="@android:color/white"
-                android:text="aaa"
-                android:layout_weight="1.0"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                />
-
-            <RadioButton
-                android:id="@+id/loginTab"
-                android:layout_weight="1.0"
-                android:textColor="@android:color/white"
-                android:text="bbbb"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-
-        </RadioGroup>
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
 

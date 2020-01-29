@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/ToolBarTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,7 @@
 
         </activity>
         <activity android:name=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/ToolBarTheme">
 
         </activity>
     </application>
