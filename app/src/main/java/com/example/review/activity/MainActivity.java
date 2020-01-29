@@ -11,8 +11,9 @@ import android.widget.RadioGroup;
 
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
+import com.example.review.fragment.BaseFragment;
 import com.example.review.fragment.LoginFragment;
-import com.example.review.fragment.RecyclerFragment;
+import com.example.review.fragment.RepoRecyclerFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,13 +28,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final LoginFragment loginFragment = new LoginFragment();
-        final RecyclerFragment recyclerFragment = new RecyclerFragment(getApiService());
+        final BaseFragment baseFragment = new BaseFragment(getApiService());
 
-        mCurrentFragment = recyclerFragment;
+        mCurrentFragment = baseFragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.mainFragmentLayout, recyclerFragment)
+                .add(R.id.mainFragmentLayout, baseFragment)
                 .commit();
 
         RadioGroup tabs = findViewById(R.id.bottomNavigate);
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.recyclerTab:{
-                        switchFragment(recyclerFragment);
+                        switchFragment(baseFragment);
                         break;
                     }
                     case R.id.loginTab:{

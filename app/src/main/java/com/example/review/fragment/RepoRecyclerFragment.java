@@ -1,7 +1,7 @@
 package com.example.review.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,32 +20,32 @@ import retrofit2.Response;
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
 import com.example.review.rv.RepoViewAdapter;
-import com.example.review.rv.RepoViewHolder;
 import com.example.review.api.model.Repo;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class RecyclerFragment extends Fragment {
+public class RepoRecyclerFragment extends Fragment {
+
+    public enum Type{
+        Repos,Starred
+    }
 
     private GithubService mApiGithubService;
     private RepoViewAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
+    private String accessToken;
+    private RecyclerView mRecyclerView;
+    private Type type;
+    private boolean hasLoaded;
 
-    public RecyclerFragment(GithubService service) {
+
+    public RepoRecyclerFragment(GithubService service, Type type) {
         super();
         mApiGithubService = service;
+        this.type = type;
+        hasLoaded = false;
     }
 
 
@@ -54,12 +54,15 @@ public class RecyclerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycler_fragment, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
+        mRecyclerView = view.findViewById(R.id.mainRecyclerView);
         mRefreshLayout = view.findViewById(R.id.swipeLayout);
-        mRefreshLayout.setRefreshing(true);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+
+
+        accessToken = getActivity().getSharedPreferences("loginStat", Context.MODE_PRIVATE).getString("accessToken","");
 
         mAdapter = new RepoViewAdapter();
 
@@ -70,17 +73,31 @@ public class RecyclerFragment extends Fragment {
             }
         });
 
-
-
-        recyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mAdapter);
 
         fetchData();
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!hasLoaded){
+            mRefreshLayout.setRefreshing(true);
+            fetchData();
+        }
+    }
+
     private void fetchData(){
-        Call<List<Repo>> call = mApiGithubService.getUserRepos("wuzehua");
+
+        //Call<List<Repo>> call = mApiGithubService.getRepos(accessToken);
+        Call<List<Repo>> call;
+        if(type == Type.Starred) {
+            call = mApiGithubService.getStarred(accessToken);
+        }else{
+            call = mApiGithubService.getRepos(accessToken);
+        }
+
         call.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
@@ -89,6 +106,7 @@ public class RecyclerFragment extends Fragment {
                     mAdapter.setData(response.body());
                     mAdapter.notifyDataSetChanged();
                     mRefreshLayout.setRefreshing(false);
+                    hasLoaded = true;
                 }
             }
 

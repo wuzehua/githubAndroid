@@ -8,4 +8,6 @@
     <color name="loginButtonColor">#EEEEEE</color>
     <color name="loginButtonDisable">#777777</color>
     <color name="loginButtonPressed">#999999</color>
+    <color name="publicTagColor">#4CAF50</color>
+    <color name="privateTagColor">#F44336</color>
 </resources>

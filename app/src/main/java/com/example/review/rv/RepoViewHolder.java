@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.review.R;
 import com.example.review.api.model.Repo;
+
 
 
 public class RepoViewHolder extends RecyclerView.ViewHolder {
@@ -20,6 +23,8 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
     private TextView mStarCount;
     private TextView mForkCount;
     private TextView mLanguageText;
+    private TextView mPrivateText;
+    private LinearLayout mLinearLayout;
 
     public static RepoViewHolder create(Context context, ViewGroup root){
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_holder, root, false);
@@ -33,7 +38,15 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
         mStarCount = itemView.findViewById(R.id.starCount);
         mForkCount = itemView.findViewById(R.id.forkCount);
         mLanguageText = itemView.findViewById(R.id.languageText);
+        mPrivateText = itemView.findViewById(R.id.privateTagText);
+        mLinearLayout = itemView.findViewById(R.id.repoLinearLayout);
 
+        mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Click",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -45,6 +58,14 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
             }else{
 
                 mDescription.setText(data.getDescription());
+            }
+
+            if(data.isPrivate()){
+                mPrivateText.setText("private");
+                mPrivateText.setBackgroundResource(R.drawable.private_tag_background);
+            }else {
+                mPrivateText.setText("public");
+                mPrivateText.setBackgroundResource(R.drawable.public_tag_background);
             }
 
             mStarCount.setText(String.format("Star %d", data.getStar()));

@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GithubService {
 
@@ -29,5 +30,19 @@ public interface GithubService {
     );
 
     @GET("users/{name}/repos")
-    Call<List<Repo>> getUserRepos(@Path("name") String userName);
+    Call<List<Repo>> getUserRepos(
+            @Path("name") String userName
+    );
+
+    @GET("user/repos")
+    Call<List<Repo>> getRepos(
+            @Query("access_token") String accessToken
+    );
+
+    @GET("user/starred")
+    Call<List<Repo>> getStarred(
+            @Query("access_token") String accessToken
+    );
+
+
 }
