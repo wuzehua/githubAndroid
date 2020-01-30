@@ -19,6 +19,8 @@
         android:id="@+id/bottomNavigate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:itemIconTint="@drawable/navigate_button_style"
+        app:itemTextColor="@drawable/navigate_button_style"
         app:menu="@menu/menu_main"/>
 
 

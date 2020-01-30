@@ -1,6 +1,7 @@
 package com.example.review.rv;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.review.R;
+import com.example.review.activity.ContentActivity;
 import com.example.review.api.model.Repo;
 
 
@@ -25,6 +27,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
     private TextView mLanguageText;
     private TextView mPrivateText;
     private LinearLayout mLinearLayout;
+
 
     public static RepoViewHolder create(Context context, ViewGroup root){
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_holder, root, false);
@@ -41,16 +44,10 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
         mPrivateText = itemView.findViewById(R.id.privateTagText);
         mLinearLayout = itemView.findViewById(R.id.repoLinearLayout);
 
-        mLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "Click",Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
-    public void bind(Repo data){
+    public void bind(final Repo data){
         if(data != null){
             mRepoNameTextView.setText(data.getName());
             if(data.getDescription() == null){
@@ -72,7 +69,14 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
             mForkCount.setText(String.format("Fork %d",data.getFork()));
             mLanguageText.setText(data.getLanguage());
 
-
+            mLinearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), ContentActivity.class);
+                    intent.putExtra("fullName", data.getName());
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
 
     }
