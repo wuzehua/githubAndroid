@@ -10,8 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ContentActivity"
-            android:theme="@style/ToolBarTheme"/>
+        <activity android:name=".activity.UserDetailActivity"></activity>
+        <activity
+            android:name=".activity.ContentActivity"
+            android:theme="@style/ToolBarTheme" />
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/ToolBarTheme">
@@ -33,10 +35,10 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/ToolBarTheme"/>
+            android:theme="@style/ToolBarTheme" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

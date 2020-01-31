@@ -1,5 +1,7 @@
 package com.example.review.rv;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -30,8 +32,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
 
 
     public static RepoViewHolder create(Context context, ViewGroup root){
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_holder, root, false);
-        return new RepoViewHolder(view);
+        return new RepoViewHolder(LayoutInflater.from(context).inflate(R.layout.recycler_view_holder, root, false));
     }
 
     public RepoViewHolder(@NonNull View itemView) {
@@ -75,6 +76,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
                     Intent intent = new Intent(view.getContext(), ContentActivity.class);
                     intent.putExtra("fullName", data.getName());
                     view.getContext().startActivity(intent);
+                    ((Activity)view.getContext()).overridePendingTransition(R.anim.activity_slide_in,R.anim.activity_slide_out);
                 }
             });
         }

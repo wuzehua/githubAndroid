@@ -2,13 +2,7 @@ package com.example.review.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,70 +11,70 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.example.review.R;
+import com.example.review.api.model.UserInfo;
 import com.example.review.api.service.GithubService;
-import com.example.review.rv.RepoViewAdapter;
-import com.example.review.api.model.Repo;
+import com.example.review.rv.UserViewAdapter;
 
 import java.util.List;
 
 
+public class UserRecyclerFragment extends Fragment {
 
-public class RepoRecyclerFragment extends Fragment {
+
+    private GithubService mService;
+    private String userName;
+    private String getType;
+    private String accessToken;
+    private SwipeRefreshLayout mRefreshLayout;
+    private UserViewAdapter mAdapter;
+    private boolean hasLoaded;
 
     public enum Type{
-        Repos,Starred
+        FOLLOWER,FOLLOWING
     }
 
-    private GithubService mApiGithubService;
-    private RepoViewAdapter mAdapter;
-    private SwipeRefreshLayout mRefreshLayout;
-    private String accessToken;
-    private boolean hasLoaded;
-    private String repoType;
-    private String userName;
-
-    public RepoRecyclerFragment(GithubService service, Type type) {
+    public UserRecyclerFragment(GithubService service, Type type) {
         super();
-        mApiGithubService = service;
+        if(type == Type.FOLLOWER){
+            getType = "followers";
+        }else {
+            getType = "following";
+        }
         hasLoaded = false;
         userName = "user";
-        if(type == Type.Repos){
-            repoType = "repos";
-        }else{
-            repoType = "starred";
-        }
+        mService = service;
     }
 
-    public RepoRecyclerFragment(GithubService service, Type type, String userName) {
+    public UserRecyclerFragment(GithubService service, Type type, String userName){
         super();
-        mApiGithubService = service;
+        if(type == Type.FOLLOWER){
+            getType = "followers";
+        }else {
+            getType = "following";
+        }
         hasLoaded = false;
         this.userName = "users/" + userName;
-        if(type == Type.Repos){
-            repoType = "repos";
-        }else{
-            repoType = "starred";
-        }
+        mService = service;
     }
 
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.recycler_fragment, container, false);
-
         RecyclerView mRecyclerView = view.findViewById(R.id.mainRecyclerView);
         mRefreshLayout = view.findViewById(R.id.swipeLayout);
-
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
 
-
         accessToken = getActivity().getSharedPreferences("loginStat", Context.MODE_PRIVATE).getString("accessToken","");
-
-        mAdapter = new RepoViewAdapter();
 
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -89,13 +83,14 @@ public class RepoRecyclerFragment extends Fragment {
             }
         });
 
+        mAdapter = new UserViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
-        //fetchData();
 //        if(!hasLoaded){
 //            mRefreshLayout.setRefreshing(true);
 //            fetchData();
 //        }
+
         return view;
     }
 
@@ -109,14 +104,12 @@ public class RepoRecyclerFragment extends Fragment {
     }
 
     private void fetchData(){
-        Call<List<Repo>> call = mApiGithubService.getRepos(userName, repoType, accessToken);
-
-        call.enqueue(new Callback<List<Repo>>() {
+        Call<List<UserInfo>> call = mService.getUsers(userName, getType, accessToken);
+        call.enqueue(new Callback<List<UserInfo>>() {
             @Override
-            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-                if(response.body() != null && response.isSuccessful()){
-                    //Toast.makeText(getContext(), "Refresh finish", Toast.LENGTH_SHORT).show();
-                    mAdapter.setData(response.body());
+            public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    mAdapter.setUsers(response.body());
                     mAdapter.notifyDataSetChanged();
                     hasLoaded = true;
                 }
@@ -124,10 +117,9 @@ public class RepoRecyclerFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Repo>> call, Throwable t) {
-                Toast.makeText(getContext(), "Fetch repos failed", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<UserInfo>> call, Throwable t) {
+                mRefreshLayout.setRefreshing(false);
             }
         });
     }
-
 }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.review.R;
 import com.example.review.api.model.UserInfo;
 import com.example.review.api.service.GithubService;
@@ -42,18 +44,22 @@ public class UserInfoFragment extends Fragment {
     private TextView mCompanyText;
     private TextView mInfoBioText;
     private SwipeRefreshLayout refreshLayout;
-    private Type type;
     private String userName;
+    private boolean hasLoaded;
 
-    public enum Type{
-        PRIVATE, PUBLIC
-    }
 
     public UserInfoFragment(GithubService service){
         super();
         mService = service;
-        type = Type.PRIVATE;
-        userName = "";
+        userName = "user";
+        hasLoaded = false;
+    }
+
+    public UserInfoFragment(GithubService service, String userName){
+        super();
+        mService = service;
+        this.userName = "users/" + userName;
+        hasLoaded = false;
     }
 
     @Nullable
@@ -85,16 +91,13 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        fetchData();
+        if(!hasLoaded) {
+            fetchData();
+        }
     }
 
     private void fetchData(){
-        Call<UserInfo> call;
-        if(type == Type.PRIVATE) {
-            call = mService.getInfo(accessToken);
-        }else{
-            call = mService.getInfo(accessToken);
-        }
+        Call<UserInfo> call = mService.getInfo(userName,accessToken);
 
         call.enqueue(new Callback<UserInfo>() {
             @Override
@@ -109,7 +112,9 @@ public class UserInfoFragment extends Fragment {
                     mInfoBioText.setText(info.getBio());
                     Glide.with(Objects.requireNonNull(getContext()))
                             .load(info.getHeadImageUrl())
+                            .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
                             .into(mImageView);
+                    hasLoaded = true;
                 }
                 refreshLayout.setRefreshing(false);
             }

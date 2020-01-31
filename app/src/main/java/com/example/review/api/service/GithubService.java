@@ -31,18 +31,11 @@ public interface GithubService {
             @Field("code") String code
     );
 
-    @GET("users/{name}/repos")
-    Call<List<Repo>> getUserRepos(
-            @Path("name") String userName
-    );
 
-    @GET("user/repos")
+    @GET("{user_name}/{repo_type}")
     Call<List<Repo>> getRepos(
-            @Query("access_token") String accessToken
-    );
-
-    @GET("user/starred")
-    Call<List<Repo>> getStarred(
+            @Path(value = "user_name", encoded = true) String userName,
+            @Path(value = "repo_type", encoded = true) String type,
             @Query("access_token") String accessToken
     );
 
@@ -53,8 +46,16 @@ public interface GithubService {
             @Query("access_token") String accessToken
     );
 
-    @GET("user")
+    @GET("{user_name}")
     Call<UserInfo> getInfo(
+            @Path(value = "user_name", encoded = true) String userName,
+            @Query("access_token") String accessToken
+    );
+
+    @GET("{user_name}/{user_type}")
+    Call<List<UserInfo>> getUsers(
+            @Path(value = "user_name",encoded = true) String userName,
+            @Path(value = "user_type", encoded = true) String userType,
             @Query("access_token") String accessToken
     );
 

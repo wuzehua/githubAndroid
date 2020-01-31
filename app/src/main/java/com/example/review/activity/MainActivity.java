@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +23,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ServiceActivity {
 
     private Fragment mCurrentFragment;
-    private Retrofit mRetrofit;
-    private GithubService mApiGithubService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(getResources().getColor(R.color.statBarColor, getTheme()));
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         mCurrentFragment = baseFragment;
 
@@ -90,20 +89,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private GithubService getApiService(){
-        if(mRetrofit == null){
-            mRetrofit = new Retrofit.Builder()
-                    .baseUrl(GithubService.GITHUB_API_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-
-        if(mApiGithubService == null){
-            mApiGithubService = mRetrofit.create(GithubService.class);
-        }
-
-        return mApiGithubService;
-    }
 
 
 

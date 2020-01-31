@@ -38,6 +38,7 @@ public class FilesFragment extends Fragment {
     private String repoFullName;
     private String accessToken;
     private String mCurrentPath;
+    private TextView mFilePathText;
     private boolean canResponse;
 
 
@@ -133,6 +134,7 @@ public class FilesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.fileRecyclerView);
         TextView goBackTextView = view.findViewById(R.id.goBackText);
+        mFilePathText = view.findViewById(R.id.filePathText);
         mAdapter = new FileAdapter();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -163,6 +165,7 @@ public class FilesFragment extends Fragment {
     private void fetchData(final String filePath, final RefreshType type){
 
         canResponse = false;
+        mFilePathText.setText("Loading...");
 
         Call<List<FileContent>> call = mService.getContentsOfRepo(repoFullName, filePath, accessToken);
         call.enqueue(new Callback<List<FileContent>>() {
@@ -180,10 +183,12 @@ public class FilesFragment extends Fragment {
                 }
 
                 canResponse = true;
+                mFilePathText.setText("." + mCurrentPath);
             }
 
             @Override
             public void onFailure(Call<List<FileContent>> call, Throwable t) {
+                mFilePathText.setText("." + mCurrentPath);
                 canResponse = true;
             }
         });

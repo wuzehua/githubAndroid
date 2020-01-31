@@ -25,11 +25,26 @@ public class BaseFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private ArrayList<String> titles;
+    private String userName;
+    private boolean hasName;
 
     public BaseFragment(GithubService service){
         mService = service;
+        initTitles();
+        hasName = false;
+        userName = null;
+    }
+
+    public BaseFragment(GithubService service, @NonNull String userName){
+        mService = service;
+        initTitles();
+        hasName = true;
+        this.userName = userName;
+    }
+
+    private void initTitles(){
         titles = new ArrayList<>();
-        Collections.addAll(titles, "Repo", "Star");
+        Collections.addAll(titles, "Info","Repo", "Star","Followers","Following");
     }
 
     @Nullable
@@ -41,8 +56,21 @@ public class BaseFragment extends Fragment {
         mViewPager = view.findViewById(R.id.baseFragmentViewPager);
 
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Repos));
-        fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Starred));
+
+        if(!hasName) {
+            fragments.add(new UserInfoFragment(mService));
+            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Repos));
+            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Starred));
+            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWER));
+            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWING));
+        }else {
+            fragments.add(new UserInfoFragment(mService, userName));
+            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Repos, userName));
+            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Starred, userName));
+            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWER, userName));
+            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWING, userName));
+        }
+
 
         mViewPager.setAdapter(new FragmentPageAdapter(getFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);

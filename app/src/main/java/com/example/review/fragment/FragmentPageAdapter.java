@@ -1,5 +1,7 @@
 package com.example.review.fragment;
 
+import android.view.ViewGroup;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -34,5 +36,10 @@ public class FragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return titles.get(position);
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        //super.destroyItem(container, position, object);
     }
 }
