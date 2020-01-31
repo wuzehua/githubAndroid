@@ -3,6 +3,7 @@ package com.example.review.api.service;
 import com.example.review.api.model.AccessToken;
 import com.example.review.api.model.FileContent;
 import com.example.review.api.model.Repo;
+import com.example.review.api.model.UserInfo;
 
 import java.util.List;
 
@@ -49,6 +50,11 @@ public interface GithubService {
     Call<List<FileContent>> getContentsOfRepo(
             @Path(value = "repo_name", encoded = true) String repoName,
             @Path(value = "file_path", encoded = true) String filePath,
+            @Query("access_token") String accessToken
+    );
+
+    @GET("user")
+    Call<UserInfo> getInfo(
             @Query("access_token") String accessToken
     );
 

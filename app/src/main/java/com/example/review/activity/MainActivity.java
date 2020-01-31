@@ -7,20 +7,16 @@ import androidx.fragment.app.Fragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RadioGroup;
 
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
 import com.example.review.fragment.BaseFragment;
-import com.example.review.fragment.LoginFragment;
-import com.example.review.fragment.RepoRecyclerFragment;
+import com.example.review.fragment.UserInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -37,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final LoginFragment loginFragment = new LoginFragment();
+        final UserInfoFragment userInfoFragment = new UserInfoFragment(getApiService());
         final BaseFragment baseFragment = new BaseFragment(getApiService());
 
         Window window = getWindow();
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     case R.id.meNavigate:{
-                        switchFragment(loginFragment);
+                        switchFragment(userInfoFragment);
                         break;
                     }
                 }
