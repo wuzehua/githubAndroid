@@ -1,18 +1,20 @@
 package com.example.review.rv;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.review.R;
+import com.example.review.activity.UserDetailActivity;
 import com.example.review.api.model.UserInfo;
 
 import androidx.annotation.NonNull;
@@ -22,14 +24,12 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView mImageView;
     private TextView mLoginText;
-    private TextView mEmailText;
     private LinearLayout mLinearLayout;
 
     public UserViewHolder(@NonNull View view){
         super(view);
         mImageView = view.findViewById(R.id.userImage);
         mLoginText = view.findViewById(R.id.userLoginText);
-        mEmailText = view.findViewById(R.id.userEmailText);
         mLinearLayout = view.findViewById(R.id.userLinearLayout);
     }
 
@@ -44,13 +44,15 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
                     .load(data.getHeadImageUrl())
                     .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
                     .into(mImageView);
-
+            final String userName = data.getLogin();
             mLoginText.setText(data.getLogin());
-            mEmailText.setText(data.getEmail());
             mLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(),"Tap",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(view.getContext(), UserDetailActivity.class);
+                    intent.putExtra("userName", userName);
+                    view.getContext().startActivity(intent);
+                    ((Activity)view.getContext()).overridePendingTransition(R.anim.activity_slide_in,R.anim.activity_slide_out);
                 }
             });
         }

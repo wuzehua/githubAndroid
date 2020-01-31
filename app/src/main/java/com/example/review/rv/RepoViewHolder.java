@@ -48,7 +48,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bind(final Repo data){
+    public void bind(Repo data){
         if(data != null){
             mRepoNameTextView.setText(data.getName());
             if(data.getDescription() == null){
@@ -66,6 +66,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
                 mPrivateText.setBackgroundResource(R.drawable.public_tag_background);
             }
 
+            final String name = data.getName();
             mStarCount.setText(String.format("Star %d", data.getStar()));
             mForkCount.setText(String.format("Fork %d",data.getFork()));
             mLanguageText.setText(data.getLanguage());
@@ -74,7 +75,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ContentActivity.class);
-                    intent.putExtra("fullName", data.getName());
+                    intent.putExtra("fullName", name);
                     view.getContext().startActivity(intent);
                     ((Activity)view.getContext()).overridePendingTransition(R.anim.activity_slide_in,R.anim.activity_slide_out);
                 }
