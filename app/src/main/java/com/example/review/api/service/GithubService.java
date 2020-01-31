@@ -1,6 +1,7 @@
 package com.example.review.api.service;
 
 import com.example.review.api.model.AccessToken;
+import com.example.review.api.model.CommitInfo;
 import com.example.review.api.model.FileContent;
 import com.example.review.api.model.Repo;
 import com.example.review.api.model.UserInfo;
@@ -45,6 +46,14 @@ public interface GithubService {
             @Path(value = "file_path", encoded = true) String filePath,
             @Query("access_token") String accessToken
     );
+
+
+    @GET("repos/{repo_name}/commits")
+    Call<List<CommitInfo>> getCommitsInfo(
+            @Path(value = "repo_name", encoded = true) String repoName,
+            @Query("access_token") String accessToken
+    );
+
 
     @GET("{user_name}")
     Call<UserInfo> getInfo(

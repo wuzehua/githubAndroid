@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
+import com.example.review.fragment.ContentBaseFragment;
 import com.example.review.fragment.FilesFragment;
 
 public class ContentActivity extends ServiceActivity {
@@ -49,7 +50,7 @@ public class ContentActivity extends ServiceActivity {
 
 
 
-        Fragment fragment = new FilesFragment(getApiService(), fullName);
+        Fragment fragment = new ContentBaseFragment(getApiService(), fullName);
 
         getSupportFragmentManager()
                 .beginTransaction()

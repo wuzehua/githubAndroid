@@ -91,11 +91,7 @@ public class RepoRecyclerFragment extends Fragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        //fetchData();
-//        if(!hasLoaded){
-//            mRefreshLayout.setRefreshing(true);
-//            fetchData();
-//        }
+
         return view;
     }
 
