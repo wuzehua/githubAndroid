@@ -83,7 +83,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
-        refreshLayout.setRefreshing(true);
+
 
         return view;
     }
@@ -92,6 +92,7 @@ public class UserInfoFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(!hasLoaded) {
+            refreshLayout.setRefreshing(true);
             fetchData();
         }
     }

@@ -2,12 +2,14 @@ package com.example.review.fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.review.R;
+import com.example.review.activity.WebActivity;
 import com.example.review.api.model.FileContent;
 import com.example.review.api.service.GithubService;
 
@@ -39,8 +42,9 @@ public class FilesFragment extends Fragment {
     private String accessToken;
     private String mCurrentPath;
     private TextView mFilePathText;
+    private SwipeRefreshLayout mRefreshLayout;
     private boolean canResponse;
-
+    private boolean hasLoaded;
 
     private enum RefreshType{
         GO_BACK, GO_IN, REFRESH
@@ -75,7 +79,15 @@ public class FilesFragment extends Fragment {
                     public void onClick(View view) {
                         if(FilesFragment.this.canResponse){
                             if(content.getType().equals("dir")) {
+                                mRefreshLayout.setRefreshing(true);
                                 fetchData("/" + content.getPath(), RefreshType.GO_IN);
+                            }else if(content.getType().equals("file")){
+                                String url = content.getFileUrl() + "&access_token=" + accessToken;
+                                Intent intent = new Intent(FilesFragment.this.getContext(), WebActivity.class);
+                                intent.putExtra("fileUrl", url);
+                                startActivity(intent);
+                                FilesFragment.this.getActivity()
+                                        .overridePendingTransition(R.anim.activity_slide_up,R.anim.activity_slide_down);
                             }
                         }
                     }
@@ -122,6 +134,7 @@ public class FilesFragment extends Fragment {
         filePathStack = new Stack<>();
         mCurrentPath = "";
         this.repoFullName = repoFullName;
+        hasLoaded = false;
     }
 
     @Override
@@ -134,6 +147,7 @@ public class FilesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.fileRecyclerView);
         TextView goBackTextView = view.findViewById(R.id.goBackText);
+        mRefreshLayout = view.findViewById(R.id.fileRefreshLayout);
         mFilePathText = view.findViewById(R.id.filePathText);
         mAdapter = new FileAdapter();
 
@@ -147,8 +161,18 @@ public class FilesFragment extends Fragment {
                     if(filePathStack.empty()){
                         Toast.makeText(getContext(), "root", Toast.LENGTH_SHORT).show();
                     }else {
+                        mRefreshLayout.setRefreshing(true);
                         fetchData(filePathStack.peek(), RefreshType.GO_BACK);
                     }
+                }
+            }
+        });
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(canResponse){
+                    fetchData(mCurrentPath,RefreshType.REFRESH);
                 }
             }
         });
@@ -159,7 +183,10 @@ public class FilesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        fetchData(mCurrentPath, RefreshType.REFRESH);
+        if(!hasLoaded) {
+            mRefreshLayout.setRefreshing(true);
+            fetchData(mCurrentPath, RefreshType.REFRESH);
+        }
     }
 
     private void fetchData(final String filePath, final RefreshType type){
@@ -180,16 +207,20 @@ public class FilesFragment extends Fragment {
                     }
                     mAdapter.setFiles(response.body());
                     mAdapter.notifyDataSetChanged();
+                    hasLoaded = true;
                 }
 
                 canResponse = true;
                 mFilePathText.setText("." + mCurrentPath);
+                mRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<FileContent>> call, Throwable t) {
                 mFilePathText.setText("." + mCurrentPath);
                 canResponse = true;
+                Toast.makeText(getContext(), "Fetch Files Failed", Toast.LENGTH_SHORT).show();
+                mRefreshLayout.setRefreshing(false);
             }
         });
     }

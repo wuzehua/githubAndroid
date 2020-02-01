@@ -67,8 +67,8 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
             }
 
             final String name = data.getName();
-            mStarCount.setText(String.format("Star %d", data.getStar()));
-            mForkCount.setText(String.format("Fork %d",data.getFork()));
+            mStarCount.setText(String.format("%d", data.getStar()));
+            mForkCount.setText(String.format("%d",data.getFork()));
             mLanguageText.setText(data.getLanguage());
 
             mLinearLayout.setOnClickListener(new View.OnClickListener() {

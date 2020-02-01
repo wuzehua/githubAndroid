@@ -52,15 +52,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:foreground="@drawable/ic_action_star"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+
         <TextView
+            android:paddingStart="5dp"
             android:paddingEnd="15dp"
             android:textSize="12sp"
             android:id="@+id/starCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:foreground="@drawable/ic_action_fork"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+
         <TextView
-            android:paddingHorizontal="15dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="15dp"
             android:textSize="12sp"
             android:id="@+id/forkCount"
             android:layout_width="wrap_content"

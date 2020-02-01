@@ -10,8 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.UserDetailActivity"
-            android:theme="@style/ToolBarTheme"></activity>
+        <activity android:name=".activity.WebActivity"
+            android:theme="@style/ToolBarTheme"/>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/ToolBarTheme" />
+        <activity
+            android:name=".activity.UserDetailActivity"
+            android:theme="@style/ToolBarTheme" />
         <activity
             android:name=".activity.ContentActivity"
             android:theme="@style/ToolBarTheme" />

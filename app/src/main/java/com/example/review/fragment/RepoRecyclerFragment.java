@@ -122,6 +122,7 @@ public class RepoRecyclerFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Repo>> call, Throwable t) {
                 Toast.makeText(getContext(), "Fetch repos failed", Toast.LENGTH_SHORT).show();
+                mRefreshLayout.setRefreshing(false);
             }
         });
     }

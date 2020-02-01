@@ -6,6 +6,7 @@ public class FileContent {
     @SerializedName("name") private String name;
     @SerializedName("type") private String type;
     @SerializedName("path") private String path;
+    @SerializedName("download_url") private String fileUrl;
 
     public String getName() {
         return name;
@@ -17,5 +18,9 @@ public class FileContent {
 
     public String getPath() {
         return path;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
     }
 }

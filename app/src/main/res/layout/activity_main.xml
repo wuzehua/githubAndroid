@@ -15,7 +15,7 @@
         />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:background="@color/cardview_dark_background"
+        android:background="@color/statBarColor"
         android:id="@+id/bottomNavigate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
