@@ -68,4 +68,13 @@ public interface GithubService {
             @Query("access_token") String accessToken
     );
 
+    @GET("search/repositories")
+    Call<List<Repo>> getSearchRepos(
+            @Query("q") String name
+    );
+
+    @GET("search/users")
+    Call<List<UserInfo>> getSearchUsers(
+            @Query("q") String name
+    );
 }

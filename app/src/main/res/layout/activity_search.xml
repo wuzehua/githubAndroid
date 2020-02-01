@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SearchActivity">
+    >
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:paddingVertical="10dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/searchCloseButton"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:foreground="@drawable/ic_action_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+        <EditText
+            android:id="@+id/searchContent"
+            android:layout_marginHorizontal="30dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:foreground="@drawable/ic_action_search"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/searchTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/searchViewPager"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
 
 </LinearLayout>
