@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:gravity="center_vertical"
@@ -21,6 +21,8 @@
             android:layout_height="25dp"/>
 
         <EditText
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:id="@+id/searchContent"
             android:layout_marginHorizontal="30dp"
             android:layout_weight="1"
@@ -38,6 +40,8 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
+        app:tabMode="fixed"
+        app:tabGravity="fill"
         android:id="@+id/searchTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

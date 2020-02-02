@@ -82,7 +82,7 @@ public class FilesFragment extends Fragment {
                                 mRefreshLayout.setRefreshing(true);
                                 fetchData("/" + content.getPath(), RefreshType.GO_IN);
                             }else if(content.getType().equals("file")){
-                                String url = content.getFileUrl() + "&access_token=" + accessToken;
+                                String url = content.getFileUrl();
                                 Intent intent = new Intent(FilesFragment.this.getContext(), WebActivity.class);
                                 intent.putExtra("fileUrl", url);
                                 startActivity(intent);

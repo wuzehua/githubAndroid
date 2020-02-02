@@ -4,6 +4,7 @@ import com.example.review.api.model.AccessToken;
 import com.example.review.api.model.CommitInfo;
 import com.example.review.api.model.FileContent;
 import com.example.review.api.model.Repo;
+import com.example.review.api.model.SearchResult;
 import com.example.review.api.model.UserInfo;
 
 import java.util.List;
@@ -69,12 +70,14 @@ public interface GithubService {
     );
 
     @GET("search/repositories")
-    Call<List<Repo>> getSearchRepos(
-            @Query("q") String name
+    Call<SearchResult<Repo>> getSearchRepos(
+            @Query("q") String name,
+            @Query("access_token") String accessToken
     );
 
     @GET("search/users")
-    Call<List<UserInfo>> getSearchUsers(
-            @Query("q") String name
+    Call<SearchResult<UserInfo>> getSearchUsers(
+            @Query("q") String name,
+            @Query("access_token") String accessToken
     );
 }

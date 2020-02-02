@@ -1,5 +1,6 @@
 package com.example.review.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.example.review.api.service.GithubService;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -23,6 +25,7 @@ public class SearchResultFragment extends Fragment {
     protected boolean isInteractive;
     protected boolean isRequesting;
     protected GithubService mService;
+    protected String accessToken;
 
     public SearchResultFragment(GithubService service){
         super();
@@ -39,6 +42,8 @@ public class SearchResultFragment extends Fragment {
         View view = inflater.inflate(R.layout.recycler_fragment, container, false);
         mRecyclerView = view.findViewById(R.id.mainRecyclerView);
         mRefreshLayout = view.findViewById(R.id.swipeLayout);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        accessToken = getActivity().getSharedPreferences("loginStat", Context.MODE_PRIVATE).getString("accessToken","");
 
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -55,6 +60,7 @@ public class SearchResultFragment extends Fragment {
         super.onResume();
         isInteractive = true;
         if(hasRequest && !isRequesting){
+            mRefreshLayout.setRefreshing(true);
             fetchData();
         }
     }
@@ -66,11 +72,13 @@ public class SearchResultFragment extends Fragment {
     }
 
     public void search(String searchContent){
-        mSearchContent = searchContent;
-        hasRequest = true;
-        if(isInteractive){
-            mRefreshLayout.setRefreshing(true);
-            fetchData();
+        if(searchContent != null && !searchContent.equals("")) {
+            mSearchContent = searchContent;
+            hasRequest = true;
+            if (isInteractive) {
+                mRefreshLayout.setRefreshing(true);
+                fetchData();
+            }
         }
     }
 

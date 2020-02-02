@@ -12,10 +12,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class FragmentPageAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> fragments;
+    private List<? extends Fragment> fragments;
     private List<String> titles;
 
-    public FragmentPageAdapter(FragmentManager fragmentManager, List<Fragment> fragments, List<String> titles){
+    public FragmentPageAdapter(FragmentManager fragmentManager, List<? extends Fragment> fragments, List<String> titles){
         super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.fragments = fragments;
         this.titles = titles;
