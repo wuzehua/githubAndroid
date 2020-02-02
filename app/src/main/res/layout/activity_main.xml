@@ -1,29 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context=".activity.MainActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/mainFragmentLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.0"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:background="@color/statBarColor"
-        android:id="@+id/bottomNavigate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemIconTint="@drawable/navigate_button_style"
-        app:itemTextColor="@drawable/navigate_button_style"
-        app:menu="@menu/menu_main"/>
+        <FrameLayout
+            android:id="@+id/mainFragmentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/statBarColor"
+            app:itemIconTint="@drawable/navigate_button_style"
+            app:itemTextColor="@drawable/navigate_button_style"
+            app:menu="@menu/menu_main" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:background="@color/logoutButtonColor"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/logoutButton"
+            android:paddingHorizontal="16dp"
+            android:gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:textSize="30sp"
+            android:textColor="@color/loginButtonColor"
+            android:text="@string/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
 
+    </LinearLayout>
 
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

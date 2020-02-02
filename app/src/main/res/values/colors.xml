@@ -11,4 +11,5 @@
     <color name="publicTagColor">#4CAF50</color>
     <color name="privateTagColor">#F44336</color>
     <color name="statBarColor">#303030</color>
+    <color name="logoutButtonColor">#952A23</color>
 </resources>
