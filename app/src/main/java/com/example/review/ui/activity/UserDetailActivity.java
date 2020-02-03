@@ -1,4 +1,4 @@
-package com.example.review.activity;
+package com.example.review.ui.activity;
 
 
 import android.content.Intent;
@@ -10,14 +10,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.review.R;
-import com.example.review.fragment.BaseFragment;
+import com.example.review.ui.fragment.BaseFragment;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 
-public class UserDetailActivity extends ServiceActivity {
+public class UserDetailActivity extends AppCompatActivity {
 
 
     @Override
@@ -42,9 +43,9 @@ public class UserDetailActivity extends ServiceActivity {
 
         Fragment fragment;
         if(userName != null){
-            fragment = new BaseFragment(getApiService(), userName);
+            fragment = BaseFragment.newInstance(userName);
         }else {
-            fragment = new BaseFragment(getApiService());
+            fragment = BaseFragment.newInstance();
         }
 
         getSupportFragmentManager()

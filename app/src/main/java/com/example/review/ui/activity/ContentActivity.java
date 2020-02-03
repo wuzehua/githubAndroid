@@ -1,29 +1,22 @@
-package com.example.review.activity;
+package com.example.review.ui.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import com.example.review.R;
-import com.example.review.api.service.GithubService;
-import com.example.review.fragment.ContentBaseFragment;
-import com.example.review.fragment.FilesFragment;
+import com.example.review.ui.fragment.ContentBaseFragment;
 
-public class ContentActivity extends ServiceActivity {
+public class ContentActivity extends AppCompatActivity {
 
 
     @Override
@@ -50,7 +43,7 @@ public class ContentActivity extends ServiceActivity {
 
 
 
-        Fragment fragment = new ContentBaseFragment(getApiService(), fullName);
+        Fragment fragment = ContentBaseFragment.newInstance(fullName);
 
         getSupportFragmentManager()
                 .beginTransaction()

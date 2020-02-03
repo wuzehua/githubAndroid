@@ -1,4 +1,4 @@
-package com.example.review.rv;
+package com.example.review.ui.rv;
 
 import android.content.Context;
 import android.view.LayoutInflater;

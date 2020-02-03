@@ -1,4 +1,4 @@
-package com.example.review.rv;
+package com.example.review.ui.rv;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.review.R;
-import com.example.review.activity.UserDetailActivity;
+import com.example.review.ui.activity.UserDetailActivity;
 import com.example.review.api.model.UserInfo;
 
 import androidx.annotation.NonNull;

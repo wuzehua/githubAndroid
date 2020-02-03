@@ -1,12 +1,10 @@
-package com.example.review.activity;
+package com.example.review.ui.activity;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,19 +17,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.review.R;
-import com.example.review.api.service.GithubService;
-import com.example.review.fragment.BaseFragment;
-import com.example.review.fragment.HomeFragment;
-import com.example.review.fragment.UserInfoFragment;
+import com.example.review.ui.fragment.BaseFragment;
+import com.example.review.ui.fragment.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 
 
-public class MainActivity extends ServiceActivity {
+public class MainActivity extends AppCompatActivity {
 
     private Fragment mCurrentFragment;
 
@@ -70,8 +65,8 @@ public class MainActivity extends ServiceActivity {
             }
         });
 
-        final Fragment homeFragment = new HomeFragment();
-        final Fragment baseFragment = new BaseFragment(getApiService());
+        final Fragment homeFragment = HomeFragment.newInstance();
+        final Fragment baseFragment = BaseFragment.newInstance();
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

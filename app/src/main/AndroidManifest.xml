@@ -10,19 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.WebActivity"
+        <activity android:name=".ui.activity.WebActivity"
             android:theme="@style/ToolBarTheme"/>
         <activity
-            android:name=".activity.SearchActivity"
+            android:name=".ui.activity.SearchActivity"
             android:theme="@style/ToolBarTheme" />
         <activity
-            android:name=".activity.UserDetailActivity"
+            android:name=".ui.activity.UserDetailActivity"
             android:theme="@style/ToolBarTheme" />
         <activity
-            android:name=".activity.ContentActivity"
+            android:name=".ui.activity.ContentActivity"
             android:theme="@style/ToolBarTheme" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:theme="@style/ToolBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:theme="@style/ToolBarTheme" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

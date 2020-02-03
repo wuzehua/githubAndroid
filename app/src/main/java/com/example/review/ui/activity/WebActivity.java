@@ -1,4 +1,4 @@
-package com.example.review.activity;
+package com.example.review.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

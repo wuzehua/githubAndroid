@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.view.ViewGroup;
 

@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,12 +24,24 @@ public class SearchResultFragment extends Fragment {
     protected boolean hasRequest;
     protected boolean isInteractive;
     protected boolean isRequesting;
-    protected GithubService mService;
     protected String accessToken;
 
-    public SearchResultFragment(GithubService service){
-        super();
-        mService = service;
+    public static SearchResultFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SearchResultFragment fragment = new SearchResultFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public SearchResultFragment(){
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         isInteractive = false;
         hasRequest = false;
         isRequesting = false;

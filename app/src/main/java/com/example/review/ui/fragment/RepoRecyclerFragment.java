@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,8 +19,9 @@ import retrofit2.Response;
 
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
-import com.example.review.rv.RepoViewAdapter;
+import com.example.review.ui.rv.RepoViewAdapter;
 import com.example.review.api.model.Repo;
+import com.example.review.utils.GithubServiceUtils;
 
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class RepoRecyclerFragment extends Fragment {
         Repos,Starred
     }
 
-    private GithubService mApiGithubService;
     private RepoViewAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private String accessToken;
@@ -40,29 +40,54 @@ public class RepoRecyclerFragment extends Fragment {
     private String repoType;
     private String userName;
 
-    public RepoRecyclerFragment(GithubService service, Type type) {
-        super();
-        mApiGithubService = service;
-        hasLoaded = false;
-        userName = "user";
-        if(type == Type.Repos){
-            repoType = "repos";
-        }else{
-            repoType = "starred";
-        }
+
+    public RepoRecyclerFragment(){
+
     }
 
-    public RepoRecyclerFragment(GithubService service, Type type, String userName) {
-        super();
-        mApiGithubService = service;
-        hasLoaded = false;
-        this.userName = "users/" + userName;
+    public static RepoRecyclerFragment newInstance(Type type) {
+
+        Bundle args = new Bundle();
+
+        RepoRecyclerFragment fragment = new RepoRecyclerFragment();
         if(type == Type.Repos){
-            repoType = "repos";
-        }else{
-            repoType = "starred";
+            args.putString("repoType","repos");
+        }else {
+            args.putString("repoType","starred");
         }
+        args.putString("userName", "user");
+
+        fragment.setArguments(args);
+        return fragment;
     }
+
+
+    public static RepoRecyclerFragment newInstance(Type type, @NonNull String userName) {
+
+        Bundle args = new Bundle();
+
+        RepoRecyclerFragment fragment = new RepoRecyclerFragment();
+        if(type == Type.Repos){
+            args.putString("repoType","repos");
+        }else {
+            args.putString("repoType","starred");
+        }
+
+        args.putString("userName", "users/" + userName);
+
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        hasLoaded = false;
+        userName = getArguments().getString("userName");
+        repoType = getArguments().getString("repoType");
+    }
+
+
 
 
     @Nullable
@@ -105,7 +130,7 @@ public class RepoRecyclerFragment extends Fragment {
     }
 
     private void fetchData(){
-        Call<List<Repo>> call = mApiGithubService.getRepos(userName, repoType, accessToken);
+        Call<List<Repo>> call = GithubServiceUtils.getGithubApiService().getRepos(userName, repoType, accessToken);
 
         call.enqueue(new Callback<List<Repo>>() {
             @Override

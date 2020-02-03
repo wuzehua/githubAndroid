@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import com.example.review.R;
 import com.example.review.api.model.CommitInfo;
 import com.example.review.api.service.GithubService;
-import com.example.review.rv.CommitViewAdapter;
+import com.example.review.ui.rv.CommitViewAdapter;
+import com.example.review.utils.GithubServiceUtils;
 
 import java.util.List;
 
@@ -25,20 +26,34 @@ import retrofit2.Response;
 
 public class CommitFragment extends Fragment {
 
-    private GithubService mService;
     private String repoFullName;
     private SwipeRefreshLayout refreshLayout;
     private CommitViewAdapter mAdapter;
     private String accessToken;
     private boolean hasLoaded;
 
+    public static CommitFragment newInstance(@NonNull String fullName) {
 
-    public CommitFragment(GithubService service, @NonNull String fullName){
-        super();
-        mService = service;
-        repoFullName = fullName;
-        hasLoaded = false;
+        Bundle args = new Bundle();
+        args.putString("fullName", fullName);
+        CommitFragment fragment = new CommitFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
+
+    public CommitFragment(){
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        hasLoaded = false;
+        repoFullName = getArguments().getString("fullName");
+    }
+
+
 
     @Nullable
     @Override
@@ -73,7 +88,7 @@ public class CommitFragment extends Fragment {
     }
 
     private void fetchData(){
-        Call<List<CommitInfo>> call = mService.getCommitsInfo(repoFullName, accessToken);
+        Call<List<CommitInfo>> call = GithubServiceUtils.getGithubApiService().getCommitsInfo(repoFullName, accessToken);
         call.enqueue(new Callback<List<CommitInfo>>() {
             @Override
             public void onResponse(Call<List<CommitInfo>> call, Response<List<CommitInfo>> response) {

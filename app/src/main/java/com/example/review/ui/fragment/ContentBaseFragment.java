@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,17 +19,33 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 public class ContentBaseFragment extends Fragment {
-    private GithubService mService;
     private ViewPager mViewPager;
     private String repoFullName;
     ArrayList<String> titles;
 
-    public ContentBaseFragment(GithubService service, @NonNull String fullName){
-        super();
-        mService = service;
-        repoFullName = fullName;
+
+    public static ContentBaseFragment newInstance(@NonNull String fullName) {
+
+        Bundle args = new Bundle();
+        args.putString("fullName", fullName);
+        ContentBaseFragment fragment = new ContentBaseFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public ContentBaseFragment(){
+
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        repoFullName = getArguments().getString("fullName");
         initTitles();
     }
+
+
 
     private void initTitles(){
         titles = new ArrayList<>();
@@ -44,8 +60,8 @@ public class ContentBaseFragment extends Fragment {
         mViewPager = view.findViewById(R.id.baseFragmentViewPager);
 
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new FilesFragment(mService, repoFullName));
-        fragments.add(new CommitFragment(mService, repoFullName));
+        fragments.add(FilesFragment.newInstance(repoFullName));
+        fragments.add(CommitFragment.newInstance(repoFullName));
 
         mViewPager.setAdapter(new FragmentPageAdapter(getFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);

@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 
 import android.os.Bundle;
@@ -16,37 +16,55 @@ import java.util.Collections;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class BaseFragment extends Fragment {
 
-    private GithubService mService;
+
     private ViewPager mViewPager;
     private ArrayList<String> titles;
     private String userName;
     private boolean hasName;
 
-    public BaseFragment(GithubService service){
-        super();
-        mService = service;
-        initTitles();
-        hasName = false;
-        userName = null;
+    public static BaseFragment newInstance() {
+        Bundle args = new Bundle();
+        BaseFragment fragment = new BaseFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public BaseFragment(GithubService service, @NonNull String userName){
-        super();
-        mService = service;
-        initTitles();
-        hasName = true;
-        this.userName = userName;
+    public static BaseFragment newInstance(@NonNull String userName){
+        Bundle args = new Bundle();
+        BaseFragment fragment = new BaseFragment();
+        args.putString("userName", userName);
+        fragment.setArguments(args);
+        return fragment;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments()!= null && !getArguments().isEmpty()){
+            hasName = true;
+            userName = getArguments().getString("userName");
+        }else{
+            hasName = false;
+            userName = null;
+        }
+
+        initTitles();
+    }
+
+    public BaseFragment(){
+    }
+
 
     private void initTitles(){
         titles = new ArrayList<>();
         Collections.addAll(titles, "Info","Repo", "Star","Followers","Following");
     }
+
+
 
     @Nullable
     @Override
@@ -59,17 +77,17 @@ public class BaseFragment extends Fragment {
         ArrayList<Fragment> fragments = new ArrayList<>();
 
         if(!hasName) {
-            fragments.add(new UserInfoFragment(mService));
-            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Repos));
-            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Starred));
-            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWER));
-            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWING));
+            fragments.add(UserInfoFragment.newInstance());
+            fragments.add(RepoRecyclerFragment.newInstance(RepoRecyclerFragment.Type.Repos));
+            fragments.add(RepoRecyclerFragment.newInstance(RepoRecyclerFragment.Type.Starred));
+            fragments.add(UserRecyclerFragment.newInstance(UserRecyclerFragment.Type.FOLLOWER));
+            fragments.add(UserRecyclerFragment.newInstance(UserRecyclerFragment.Type.FOLLOWING));
         }else {
-            fragments.add(new UserInfoFragment(mService, userName));
-            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Repos, userName));
-            fragments.add(new RepoRecyclerFragment(mService, RepoRecyclerFragment.Type.Starred, userName));
-            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWER, userName));
-            fragments.add(new UserRecyclerFragment(mService, UserRecyclerFragment.Type.FOLLOWING, userName));
+            fragments.add(UserInfoFragment.newInstance(userName));
+            fragments.add(RepoRecyclerFragment.newInstance(RepoRecyclerFragment.Type.Repos, userName));
+            fragments.add(RepoRecyclerFragment.newInstance(RepoRecyclerFragment.Type.Starred, userName));
+            fragments.add(UserRecyclerFragment.newInstance(UserRecyclerFragment.Type.FOLLOWER, userName));
+            fragments.add(UserRecyclerFragment.newInstance(UserRecyclerFragment.Type.FOLLOWING, userName));
         }
 
 

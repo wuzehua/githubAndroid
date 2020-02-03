@@ -1,14 +1,10 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.review.R;
 import com.example.review.api.model.UserInfo;
 import com.example.review.api.service.GithubService;
+import com.example.review.utils.GithubServiceUtils;
 
 
 import java.util.Objects;
@@ -33,7 +30,6 @@ import retrofit2.Response;
 
 public class UserInfoFragment extends Fragment {
 
-    private GithubService mService;
     private String accessToken;
 
     private TextView mInfoEmailText;
@@ -48,18 +44,44 @@ public class UserInfoFragment extends Fragment {
     private boolean hasLoaded;
 
 
-    public UserInfoFragment(GithubService service){
-        super();
-        mService = service;
-        userName = "user";
-        hasLoaded = false;
+    public static UserInfoFragment newInstance() {
+
+        Bundle args = new Bundle();
+        args.putString("userName","user");
+        UserInfoFragment fragment = new UserInfoFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
-    public UserInfoFragment(GithubService service, String userName){
-        super();
-        mService = service;
-        this.userName = "users/" + userName;
+    public static UserInfoFragment newInstance(@NonNull String userName) {
+
+        Bundle args = new Bundle();
+        args.putString("userName","users/" + userName);
+        UserInfoFragment fragment = new UserInfoFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public UserInfoFragment(){
+
+    }
+//    public UserInfoFragment(){
+//        super();
+//        userName = "user";
+//        hasLoaded = false;
+//    }
+//
+//    public UserInfoFragment(String userName){
+//        super();
+//        this.userName = "users/" + userName;
+//        hasLoaded = false;
+//    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         hasLoaded = false;
+        userName = getArguments().getString("userName");
     }
 
     @Nullable
@@ -98,7 +120,7 @@ public class UserInfoFragment extends Fragment {
     }
 
     private void fetchData(){
-        Call<UserInfo> call = mService.getInfo(userName,accessToken);
+        Call<UserInfo> call = GithubServiceUtils.getGithubApiService().getInfo(userName,accessToken);
 
         call.enqueue(new Callback<UserInfo>() {
             @Override

@@ -1,8 +1,10 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,8 @@ import android.view.ViewGroup;
 import com.example.review.R;
 import com.example.review.api.model.UserInfo;
 import com.example.review.api.service.GithubService;
-import com.example.review.rv.UserViewAdapter;
+import com.example.review.ui.rv.UserViewAdapter;
+import com.example.review.utils.GithubServiceUtils;
 
 import java.util.List;
 
@@ -26,7 +29,6 @@ import java.util.List;
 public class UserRecyclerFragment extends Fragment {
 
 
-    private GithubService mService;
     private String userName;
     private String getType;
     private String accessToken;
@@ -38,30 +40,71 @@ public class UserRecyclerFragment extends Fragment {
         FOLLOWER,FOLLOWING
     }
 
-    public UserRecyclerFragment(GithubService service, Type type) {
-        super();
-        if(type == Type.FOLLOWER){
-            getType = "followers";
-        }else {
-            getType = "following";
-        }
-        hasLoaded = false;
-        userName = "user";
-        mService = service;
+
+    public UserRecyclerFragment(){
+
     }
 
-    public UserRecyclerFragment(GithubService service, Type type, String userName){
-        super();
+    public static UserRecyclerFragment newInstance(Type type) {
+
+        Bundle args = new Bundle();
         if(type == Type.FOLLOWER){
-            getType = "followers";
+            args.putString("userType","followers");
         }else {
-            getType = "following";
+            args.putString("userType","following");
         }
-        hasLoaded = false;
-        this.userName = "users/" + userName;
-        mService = service;
+
+        args.putString("userName", "user");
+        UserRecyclerFragment fragment = new UserRecyclerFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
+    public static UserRecyclerFragment newInstance(Type type,@NonNull String userName) {
+
+        Bundle args = new Bundle();
+        if(type == Type.FOLLOWER){
+            args.putString("userType","followers");
+        }else {
+            args.putString("userType","following");
+        }
+
+        args.putString("userName", "users/" + userName);
+        UserRecyclerFragment fragment = new UserRecyclerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+//    public UserRecyclerFragment(Type type) {
+//        super();
+//        if(type == Type.FOLLOWER){
+//            getType = "followers";
+//        }else {
+//            getType = "following";
+//        }
+//        hasLoaded = false;
+//        userName = "user";
+//    }
+//
+//    public UserRecyclerFragment(Type type, String userName){
+//        super();
+//        if(type == Type.FOLLOWER){
+//            getType = "followers";
+//        }else {
+//            getType = "following";
+//        }
+//        hasLoaded = false;
+//        this.userName = "users/" + userName;
+//    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        userName = getArguments().getString("userName");
+        hasLoaded = false;
+        getType = getArguments().getString("userType");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +147,7 @@ public class UserRecyclerFragment extends Fragment {
     }
 
     private void fetchData(){
-        Call<List<UserInfo>> call = mService.getUsers(userName, getType, accessToken);
+        Call<List<UserInfo>> call = GithubServiceUtils.getGithubApiService().getUsers(userName, getType, accessToken);
         call.enqueue(new Callback<List<UserInfo>>() {
             @Override
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {

@@ -1,4 +1,4 @@
-package com.example.review.rv;
+package com.example.review.ui.rv;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.review.R;
-import com.example.review.activity.ContentActivity;
+import com.example.review.ui.activity.ContentActivity;
 import com.example.review.api.model.Repo;
 
 

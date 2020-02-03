@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 
 import com.example.review.api.model.Repo;
 import com.example.review.api.model.SearchResult;
-import com.example.review.api.service.GithubService;
-import com.example.review.rv.RepoViewAdapter;
-
-import java.util.List;
+import com.example.review.ui.rv.RepoViewAdapter;
+import com.example.review.utils.GithubServiceUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,8 +20,21 @@ public class RepoSearchResultFragment extends  SearchResultFragment {
 
     private RepoViewAdapter mAdapter;
 
-    public RepoSearchResultFragment(GithubService service) {
-        super(service);
+    public RepoSearchResultFragment() {
+    }
+
+    public static RepoSearchResultFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        RepoSearchResultFragment fragment = new RepoSearchResultFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
@@ -39,7 +50,7 @@ public class RepoSearchResultFragment extends  SearchResultFragment {
     @Override
     protected void fetchData() {
         super.fetchData();
-        Call<SearchResult<Repo>> call = mService.getSearchRepos(mSearchContent, accessToken);
+        Call<SearchResult<Repo>> call = GithubServiceUtils.getGithubApiService().getSearchRepos(mSearchContent, accessToken);
 
         call.enqueue(new Callback<SearchResult<Repo>>() {
             @Override

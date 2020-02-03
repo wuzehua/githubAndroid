@@ -1,4 +1,4 @@
-package com.example.review.activity;
+package com.example.review.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
@@ -24,13 +24,10 @@ import android.widget.Toast;
 import com.example.review.R;
 import com.example.review.api.model.AccessToken;
 import com.example.review.api.service.GithubService;
+import com.example.review.utils.GithubServiceUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private final static String AUTHOR_URL = "https://github.com/login/oauth/authorize";
-    private final static String CLIENT_ID = "74c29ed1c122fa9547d1";
-    private final static String CLIENT_SECRET = "671f67129c2d67417bac90200a1ee2f0ad66fb62";
-    private final static String CALLBACK_URI = "androidgithub://callback";
 
     private Button mLoginButton;
     private SharedPreferences sharedPreferences;
@@ -52,7 +49,9 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(AUTHOR_URL + "?client_id=" + CLIENT_ID + "&scope=repo&redirect_uri=" + CALLBACK_URI));
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(GithubServiceUtils.AUTHOR_URL + "?client_id=" + GithubServiceUtils.CLIENT_ID
+                                + "&scope=repo&redirect_uri=" + GithubServiceUtils.CALLBACK_URI));
                 //mLoginButton.setEnabled(false);
                 startActivity(intent);
                 LoginActivity.this.finish();
@@ -78,21 +77,15 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("LoginActivity","<----------onResume------------->");
 
         Uri uri = getIntent().getData();
-        if(uri != null && uri.toString().startsWith(CALLBACK_URI)){
+        if(uri != null && uri.toString().startsWith(GithubServiceUtils.CALLBACK_URI)){
 
-
+            mLoginButton.setEnabled(false);
             String code = uri.getQueryParameter("code");
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(GithubService.GITHUB_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
 
-            GithubService service = retrofit.create(GithubService.class);
-
-            Call<AccessToken> call = service.getAccessToken(
-                    CLIENT_ID,
-                    CLIENT_SECRET,
+            Call<AccessToken> call = GithubServiceUtils.getGithubService().getAccessToken(
+                    GithubServiceUtils.CLIENT_ID,
+                    GithubServiceUtils.CLIENT_SECRET,
                     code
             );
 
@@ -115,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<AccessToken> call, Throwable t) {
                     Log.d("LoginActivity","Failed");
+                    mLoginButton.setEnabled(true);
                     Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             });

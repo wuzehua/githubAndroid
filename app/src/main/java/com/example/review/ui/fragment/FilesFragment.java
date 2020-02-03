@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.review.R;
-import com.example.review.activity.WebActivity;
+import com.example.review.ui.activity.WebActivity;
 import com.example.review.api.model.FileContent;
 import com.example.review.api.service.GithubService;
+import com.example.review.utils.GithubServiceUtils;
 
 
 import java.util.ArrayList;
@@ -36,7 +38,6 @@ import java.util.Stack;
 public class FilesFragment extends Fragment {
 
     private Stack<String> filePathStack;
-    private GithubService mService;
     private FileAdapter mAdapter;
     private String repoFullName;
     private String accessToken;
@@ -128,14 +129,33 @@ public class FilesFragment extends Fragment {
     }
 
 
-    public FilesFragment(GithubService service, String repoFullName){
-        super();
-        mService = service;
+    public static FilesFragment newInstance(@NonNull String fullName) {
+
+        Bundle args = new Bundle();
+
+        FilesFragment fragment = new FilesFragment();
+        args.putString("fullName", fullName);
+
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    public FilesFragment(){
+
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        repoFullName = getArguments().getString("fullName");
         filePathStack = new Stack<>();
         mCurrentPath = "";
-        this.repoFullName = repoFullName;
         hasLoaded = false;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -194,7 +214,7 @@ public class FilesFragment extends Fragment {
         canResponse = false;
         mFilePathText.setText("Loading...");
 
-        Call<List<FileContent>> call = mService.getContentsOfRepo(repoFullName, filePath, accessToken);
+        Call<List<FileContent>> call = GithubServiceUtils.getGithubApiService().getContentsOfRepo(repoFullName, filePath, accessToken);
         call.enqueue(new Callback<List<FileContent>>() {
             @Override
             public void onResponse(Call<List<FileContent>> call, Response<List<FileContent>> response) {

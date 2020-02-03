@@ -1,4 +1,4 @@
-package com.example.review.activity;
+package com.example.review.ui.activity;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,19 +14,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.review.R;
-import com.example.review.fragment.FragmentPageAdapter;
-import com.example.review.fragment.RepoSearchResultFragment;
-import com.example.review.fragment.SearchResultFragment;
-import com.example.review.fragment.UserSearchResultFragment;
+import com.example.review.ui.fragment.FragmentPageAdapter;
+import com.example.review.ui.fragment.RepoSearchResultFragment;
+import com.example.review.ui.fragment.SearchResultFragment;
+import com.example.review.ui.fragment.UserSearchResultFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-public class SearchActivity extends ServiceActivity {
+public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,8 @@ public class SearchActivity extends ServiceActivity {
         ArrayList<String> titles = new ArrayList<>();
         Collections.addAll(titles,"Repo","User");
         final ArrayList<SearchResultFragment> fragments = new ArrayList<>();
-        fragments.add(new RepoSearchResultFragment(getApiService()));
-        fragments.add(new UserSearchResultFragment(getApiService()));
+        fragments.add(RepoSearchResultFragment.newInstance());
+        fragments.add(UserSearchResultFragment.newInstance());
 
 
         ImageButton closeButton = findViewById(R.id.searchCloseButton);

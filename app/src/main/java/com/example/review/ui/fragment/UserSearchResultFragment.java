@@ -1,4 +1,4 @@
-package com.example.review.fragment;
+package com.example.review.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import com.example.review.api.model.SearchResult;
 import com.example.review.api.model.UserInfo;
 import com.example.review.api.service.GithubService;
-import com.example.review.rv.UserViewAdapter;
+import com.example.review.ui.rv.UserViewAdapter;
+import com.example.review.utils.GithubServiceUtils;
 
 
 import androidx.annotation.NonNull;
@@ -21,8 +22,22 @@ public class UserSearchResultFragment extends SearchResultFragment {
 
     private UserViewAdapter mAdapter;
 
-    public UserSearchResultFragment(GithubService service) {
-        super(service);
+    public static UserSearchResultFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        UserSearchResultFragment fragment = new UserSearchResultFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public UserSearchResultFragment() {
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Nullable
@@ -38,7 +53,9 @@ public class UserSearchResultFragment extends SearchResultFragment {
     @Override
     protected void fetchData() {
         super.fetchData();
-        Call<SearchResult<UserInfo>> call = mService.getSearchUsers(mSearchContent, accessToken);
+        Call<SearchResult<UserInfo>> call = GithubServiceUtils.getGithubApiService()
+                                                .getSearchUsers(mSearchContent, accessToken);
+
         call.enqueue(new Callback<SearchResult<UserInfo>>() {
             @Override
             public void onResponse(Call<SearchResult<UserInfo>> call, Response<SearchResult<UserInfo>> response) {
