@@ -63,6 +63,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
 
+
                     InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     if(manager.isActive() && getCurrentFocus() != null){
                         if(getCurrentFocus().getWindowToken() != null){

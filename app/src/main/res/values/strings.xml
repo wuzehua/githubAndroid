@@ -5,4 +5,5 @@
     <string name="login">Login</string>
     <string name="empty_view">Nothing to show yet</string>
     <string name="logout">Logout</string>
+    <string name="typeToSearch">Type to search</string>
 </resources>

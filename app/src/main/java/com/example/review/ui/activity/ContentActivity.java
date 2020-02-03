@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.example.review.R;
 import com.example.review.ui.fragment.ContentBaseFragment;
@@ -40,8 +41,15 @@ public class ContentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(fullName);
 
+        TextView star = findViewById(R.id.contentStarText);
+        TextView fork = findViewById(R.id.contentForkText);
+        TextView watch = findViewById(R.id.contentWatchText);
+        TextView license = findViewById(R.id.contentLicenseText);
 
-
+        star.setText(String.format("%d",intent.getIntExtra("star",0)));
+        fork.setText(String.format("%d", intent.getIntExtra("fork",0)));
+        watch.setText(String.format("%d",intent.getIntExtra("watch",0)));
+        license.setText(intent.getStringExtra("license"));
 
         Fragment fragment = ContentBaseFragment.newInstance(fullName);
 

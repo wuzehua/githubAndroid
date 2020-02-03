@@ -27,6 +27,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
     private TextView mLanguageText;
     private TextView mPrivateText;
     private LinearLayout mLinearLayout;
+    private TextView mLicenseText;
 
 
     public static RepoViewHolder create(Context context, ViewGroup root){
@@ -42,11 +43,11 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
         mLanguageText = itemView.findViewById(R.id.languageText);
         mPrivateText = itemView.findViewById(R.id.privateTagText);
         mLinearLayout = itemView.findViewById(R.id.repoLinearLayout);
-
+        mLicenseText = itemView.findViewById(R.id.licenseText);
     }
 
 
-    public void bind(Repo data){
+    public void bind(final Repo data){
         if(data != null){
             mRepoNameTextView.setText(data.getName());
             if(data.getDescription() == null){
@@ -64,17 +65,26 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
                 mPrivateText.setBackgroundResource(R.drawable.public_tag_background);
             }
 
-            final String name = data.getName();
             mStarCount.setText(String.format("%d", data.getStar()));
             mForkCount.setText(String.format("%d",data.getFork()));
             mLanguageText.setText(data.getLanguage());
-
+            if(data.getLicense() == null){
+                mLicenseText.setText("");
+            }else{
+                mLicenseText.setText(data.getLicense().getKey().toUpperCase());
+            }
 
             mLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ContentActivity.class);
-                    intent.putExtra("fullName", name);
+                    intent.putExtra("fullName", data.getName());
+                    intent.putExtra("star",data.getStar());
+                    if(data.getLicense() != null) {
+                        intent.putExtra("license", data.getLicense().getKey().toUpperCase());
+                    }
+                    intent.putExtra("fork",data.getFork());
+                    intent.putExtra("watch",data.getWatches());
                     view.getContext().startActivity(intent);
                     ((Activity)view.getContext()).overridePendingTransition(R.anim.activity_slide_in,R.anim.activity_slide_out);
                 }

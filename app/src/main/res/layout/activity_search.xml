@@ -21,6 +21,8 @@
             android:layout_height="25dp"/>
 
         <EditText
+            android:hint="@string/typeToSearch"
+            android:background="@color/statBarColor"
             android:singleLine="true"
             android:imeOptions="actionSearch"
             android:id="@+id/searchContent"
@@ -40,6 +42,12 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
+        app:tabIndicatorHeight="0dp"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabSelectedTextColor="@color/loginButtonColor"
+        app:tabTextColor="@color/loginButtonDisable"
+        app:tabIndicator="@drawable/tab_indicator"
+        app:tabIndicatorColor="@color/loginButtonColor"
         app:tabMode="fixed"
         app:tabGravity="fill"
         android:id="@+id/searchTabLayout"

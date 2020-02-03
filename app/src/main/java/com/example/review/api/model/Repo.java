@@ -11,6 +11,8 @@ public class Repo {
     @SerializedName("stargazers_count") private int star;
     @SerializedName("description") private String description;
     @SerializedName("private") private boolean isPrivate;
+    @SerializedName("license") private License license;
+    @SerializedName("watchers_count") private int watches;
 
     public String getName(){ return name;}
     public int getFork(){return fork;}
@@ -19,10 +21,12 @@ public class Repo {
     public String getLanguage() { return language; }
     public boolean isPrivate() { return isPrivate; }
 
-    public void setName(String name) { this.name = name; }
-    public void setFork(int fork) { this.fork = fork; }
-    public void setDescription(String description) { this.description = description; }
-    public void setLanguage(String language) { this.language = language; }
-    public void setStar(int star) { this.star = star; }
-    public void setPrivate(boolean aPrivate) { isPrivate = aPrivate; }
+    public License getLicense() {
+        return license;
+    }
+
+    public int getWatches() {
+        return watches;
+    }
+
 }

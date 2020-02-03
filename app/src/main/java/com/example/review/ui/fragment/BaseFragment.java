@@ -1,10 +1,15 @@
 package com.example.review.ui.fragment;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
@@ -100,12 +105,22 @@ public class BaseFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab != null){
                     mViewPager.setCurrentItem(tab.getPosition());
+                    View view = tab.getCustomView();
+                    if(view != null && view instanceof TextView) {
+                        ((TextView)view).setTextSize(22);
+                        Toast.makeText(getContext(), "Change size", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                if(tab != null){
+                    View view = (TextView)tab.getCustomView();
+                    if(view != null && view instanceof TextView) {
+                        ((TextView)view).setTextSize(18);
+                    }
+                }
             }
 
             @Override

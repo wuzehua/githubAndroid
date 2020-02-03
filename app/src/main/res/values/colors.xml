@@ -10,6 +10,6 @@
     <color name="loginButtonPressed">#999999</color>
     <color name="publicTagColor">#4CAF50</color>
     <color name="privateTagColor">#F44336</color>
-    <color name="statBarColor">#303030</color>
-    <color name="logoutButtonColor">#952A23</color>
+    <color name="statBarColor">#000000</color>
+    <color name="logoutButtonColor">#CD3028</color>
 </resources>
