@@ -49,7 +49,7 @@ public class ContentBaseFragment extends Fragment {
 
     private void initTitles(){
         titles = new ArrayList<>();
-        Collections.addAll(titles,"Files","Commits");
+        Collections.addAll(titles,"Files","Commits","Contributors");
     }
 
     @Nullable
@@ -62,11 +62,11 @@ public class ContentBaseFragment extends Fragment {
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(FilesFragment.newInstance(repoFullName));
         fragments.add(CommitFragment.newInstance(repoFullName));
+        fragments.add(ContributorFragment.newInstance(repoFullName));
 
         mViewPager.setAdapter(new FragmentPageAdapter(getFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override

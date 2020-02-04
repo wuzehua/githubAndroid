@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -38,46 +39,51 @@ public interface GithubService {
     Call<List<Repo>> getRepos(
             @Path(value = "user_name", encoded = true) String userName,
             @Path(value = "repo_type", encoded = true) String type,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 
     @GET("repos/{repo_name}/contents{file_path}")
     Call<List<FileContent>> getContentsOfRepo(
             @Path(value = "repo_name", encoded = true) String repoName,
             @Path(value = "file_path", encoded = true) String filePath,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 
 
     @GET("repos/{repo_name}/commits")
     Call<List<CommitInfo>> getCommitsInfo(
             @Path(value = "repo_name", encoded = true) String repoName,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 
+    @GET("repos/{repo_name}/contributors")
+    Call<List<UserInfo>> getContributors(
+            @Path(value = "repo_name",encoded = true) String repoName,
+            @Header("Authorization") String accessToken
+    );
 
     @GET("{user_name}")
     Call<UserInfo> getInfo(
             @Path(value = "user_name", encoded = true) String userName,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 
     @GET("{user_name}/{user_type}")
     Call<List<UserInfo>> getUsers(
             @Path(value = "user_name",encoded = true) String userName,
             @Path(value = "user_type", encoded = true) String userType,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 
     @GET("search/repositories")
     Call<SearchResult<Repo>> getSearchRepos(
             @Query("q") String name,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 
     @GET("search/users")
     Call<SearchResult<UserInfo>> getSearchUsers(
             @Query("q") String name,
-            @Query("access_token") String accessToken
+            @Header("Authorization") String accessToken
     );
 }

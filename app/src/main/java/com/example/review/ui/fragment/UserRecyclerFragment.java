@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 
 import com.example.review.R;
 import com.example.review.api.model.UserInfo;
-import com.example.review.api.service.GithubService;
 import com.example.review.ui.rv.UserViewAdapter;
 import com.example.review.utils.GithubServiceUtils;
 
@@ -29,7 +28,7 @@ import java.util.List;
 public class UserRecyclerFragment extends Fragment {
 
 
-    private String userName;
+    private String name;
     private String getType;
     private String accessToken;
     private SwipeRefreshLayout mRefreshLayout;
@@ -50,7 +49,7 @@ public class UserRecyclerFragment extends Fragment {
         Bundle args = new Bundle();
         if(type == Type.FOLLOWER){
             args.putString("userType","followers");
-        }else {
+        }else{
             args.putString("userType","following");
         }
 
@@ -60,7 +59,7 @@ public class UserRecyclerFragment extends Fragment {
         return fragment;
     }
 
-    public static UserRecyclerFragment newInstance(Type type,@NonNull String userName) {
+    public static UserRecyclerFragment newInstance(Type type,@NonNull String name) {
 
         Bundle args = new Bundle();
         if(type == Type.FOLLOWER){
@@ -69,39 +68,19 @@ public class UserRecyclerFragment extends Fragment {
             args.putString("userType","following");
         }
 
-        args.putString("userName", "users/" + userName);
+        args.putString("userName", "users/" + name);
         UserRecyclerFragment fragment = new UserRecyclerFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-//    public UserRecyclerFragment(Type type) {
-//        super();
-//        if(type == Type.FOLLOWER){
-//            getType = "followers";
-//        }else {
-//            getType = "following";
-//        }
-//        hasLoaded = false;
-//        userName = "user";
-//    }
-//
-//    public UserRecyclerFragment(Type type, String userName){
-//        super();
-//        if(type == Type.FOLLOWER){
-//            getType = "followers";
-//        }else {
-//            getType = "following";
-//        }
-//        hasLoaded = false;
-//        this.userName = "users/" + userName;
-//    }
+
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userName = getArguments().getString("userName");
+        name = getArguments().getString("userName");
         hasLoaded = false;
         getType = getArguments().getString("userType");
     }
@@ -147,7 +126,7 @@ public class UserRecyclerFragment extends Fragment {
     }
 
     private void fetchData(){
-        Call<List<UserInfo>> call = GithubServiceUtils.getGithubApiService().getUsers(userName, getType, accessToken);
+        Call<List<UserInfo>> call = GithubServiceUtils.getGithubApiService().getUsers(name, getType, accessToken);
         call.enqueue(new Callback<List<UserInfo>>() {
             @Override
             public void onResponse(Call<List<UserInfo>> call, Response<List<UserInfo>> response) {

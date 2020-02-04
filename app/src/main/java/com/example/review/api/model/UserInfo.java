@@ -10,6 +10,16 @@ public class UserInfo {
     @SerializedName("location") private String location;
     @SerializedName("bio") private String bio;
     @SerializedName("email") private String email;
+    @SerializedName("id") private int id;
+    @SerializedName("contributions") private int contributions;
+
+    public int getContributions() {
+        return contributions;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public String getEmail() {
         return email;

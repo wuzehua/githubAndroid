@@ -24,6 +24,8 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView mImageView;
     private TextView mLoginText;
+    private TextView mIdText;
+    private TextView mContributionText;
     private LinearLayout mLinearLayout;
 
     public UserViewHolder(@NonNull View view){
@@ -31,6 +33,8 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
         mImageView = view.findViewById(R.id.userImage);
         mLoginText = view.findViewById(R.id.userLoginText);
         mLinearLayout = view.findViewById(R.id.userLinearLayout);
+        mIdText = view.findViewById(R.id.userIdText);
+        mContributionText = view.findViewById(R.id.contributionText);
     }
 
     public static UserViewHolder create(Context context, ViewGroup root){
@@ -46,6 +50,14 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
                     .into(mImageView);
             final String userName = data.getLogin();
             mLoginText.setText(data.getLogin());
+            mIdText.setText(String.format("%d",data.getId()));
+
+            if(data.getContributions() > 0){
+                mContributionText.setText(String.format("%d", data.getContributions()));
+            }else {
+                mContributionText.setText("");
+            }
+
             mLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

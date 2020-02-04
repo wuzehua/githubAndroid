@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(response.body() != null && response.isSuccessful()) {
                         sharedPreferences.edit()
                                 .putBoolean("login",true)
-                                .putString("accessToken",response.body().getAccessToken())
+                                .putString("accessToken","token " + response.body().getAccessToken())
                                 .apply();
                         Log.d("LoginActivity", "token=" + response.body().getAccessToken());
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
