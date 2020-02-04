@@ -18,7 +18,7 @@ public class UserViewAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     public UserViewAdapter(){
         super();
-        users = new ArrayList<>();
+        users = null;
         mContext = null;
     }
 
@@ -34,12 +34,14 @@ public class UserViewAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        holder.bind(users.get(position), mContext);
+        if(users != null) {
+            holder.bind(users.get(position), mContext);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return users == null ? 0 : users.size();
     }
 
     public void setUsers(List<UserInfo> data){

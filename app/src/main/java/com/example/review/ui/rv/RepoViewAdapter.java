@@ -16,7 +16,7 @@ public class RepoViewAdapter extends RecyclerView.Adapter<RepoViewHolder> {
 
     public RepoViewAdapter(){
         super();
-        data = new ArrayList<>();
+        data = null;
     }
 
 
@@ -33,12 +33,14 @@ public class RepoViewAdapter extends RecyclerView.Adapter<RepoViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RepoViewHolder holder, int position) {
-        holder.bind(data.get(position));
+        if(data != null) {
+            holder.bind(data.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data == null ? 0 : data.size();
     }
 
     public void setData(List<Repo> newData){

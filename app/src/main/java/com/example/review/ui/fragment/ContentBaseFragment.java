@@ -49,7 +49,7 @@ public class ContentBaseFragment extends Fragment {
 
     private void initTitles(){
         titles = new ArrayList<>();
-        Collections.addAll(titles,"Files","Commits","Contributors");
+        Collections.addAll(titles,"Files","Commits","Contributors","Releases");
     }
 
     @Nullable
@@ -63,6 +63,7 @@ public class ContentBaseFragment extends Fragment {
         fragments.add(FilesFragment.newInstance(repoFullName));
         fragments.add(CommitFragment.newInstance(repoFullName));
         fragments.add(ContributorFragment.newInstance(repoFullName));
+        fragments.add(ReleaseFragment.newInstance(repoFullName));
 
         mViewPager.setAdapter(new FragmentPageAdapter(getFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);

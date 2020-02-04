@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.review.R;
-import com.example.review.api.model.CommitInfo;
-import com.example.review.api.service.GithubService;
-import com.example.review.ui.rv.CommitViewAdapter;
+import com.example.review.api.model.Release;
+import com.example.review.ui.rv.ReleaseViewAdapter;
 import com.example.review.utils.GithubServiceUtils;
 
 import java.util.List;
@@ -24,35 +23,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommitFragment extends Fragment {
+public class ReleaseFragment extends Fragment {
 
-    private String repoFullName;
-    private SwipeRefreshLayout refreshLayout;
-    private CommitViewAdapter mAdapter;
+    private String repoName;
     private String accessToken;
     private boolean hasLoaded;
+    private ReleaseViewAdapter mAdapter;
+    private SwipeRefreshLayout mRefreshLayout;
 
-    public static CommitFragment newInstance(@NonNull String fullName) {
+    public ReleaseFragment(){
 
-        Bundle args = new Bundle();
-        args.putString("fullName", fullName);
-        CommitFragment fragment = new CommitFragment();
-        fragment.setArguments(args);
-
-        return fragment;
     }
 
-    public CommitFragment(){
+    public static ReleaseFragment newInstance(@NonNull String repoName) {
 
+        Bundle args = new Bundle();
+        args.putString("repoName", repoName);
+        ReleaseFragment fragment = new ReleaseFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         hasLoaded = false;
-        repoFullName = getArguments().getString("fullName");
+        repoName = getArguments().getString("repoName");
     }
-
 
 
     @Nullable
@@ -60,20 +57,21 @@ public class CommitFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycler_fragment, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.mainRecyclerView);
-        refreshLayout = view.findViewById(R.id.swipeLayout);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new CommitViewAdapter();
-        recyclerView.setAdapter(mAdapter);
-
-        accessToken = getActivity().getSharedPreferences("loginStat", Context.MODE_PRIVATE).getString("accessToken","");
-
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRefreshLayout = view.findViewById(R.id.swipeLayout);
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 fetchData();
             }
         });
+
+        accessToken = getActivity().getSharedPreferences("loginStat", Context.MODE_PRIVATE).getString("accessToken","");
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new ReleaseViewAdapter();
+        recyclerView.setAdapter(mAdapter);
+
         return view;
     }
 
@@ -81,27 +79,27 @@ public class CommitFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(!hasLoaded){
-            refreshLayout.setRefreshing(true);
+            mRefreshLayout.setRefreshing(true);
             fetchData();
         }
     }
 
     private void fetchData(){
-        Call<List<CommitInfo>> call = GithubServiceUtils.getGithubApiService().getCommitsInfo(repoFullName, accessToken);
-        call.enqueue(new Callback<List<CommitInfo>>() {
+        Call<List<Release>> call = GithubServiceUtils.getGithubApiService().getReleases(repoName, accessToken);
+        call.enqueue(new Callback<List<Release>>() {
             @Override
-            public void onResponse(Call<List<CommitInfo>> call, Response<List<CommitInfo>> response) {
+            public void onResponse(Call<List<Release>> call, Response<List<Release>> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    mAdapter.setCommitInfoList(response.body());
+                    mAdapter.setReleases(response.body());
                     mAdapter.notifyDataSetChanged();
                     hasLoaded = true;
                 }
-                refreshLayout.setRefreshing(false);
+                mRefreshLayout.setRefreshing(false);
             }
 
             @Override
-            public void onFailure(Call<List<CommitInfo>> call, Throwable t) {
-                refreshLayout.setRefreshing(false);
+            public void onFailure(Call<List<Release>> call, Throwable t) {
+                mRefreshLayout.setRefreshing(false);
             }
         });
     }

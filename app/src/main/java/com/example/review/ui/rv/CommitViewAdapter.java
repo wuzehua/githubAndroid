@@ -19,7 +19,7 @@ public class CommitViewAdapter extends RecyclerView.Adapter<CommitViewHolder> {
     public CommitViewAdapter(){
         super();
         mContext = null;
-        commitInfoList = new ArrayList<>();
+        commitInfoList = null;
     }
 
     @NonNull
@@ -33,12 +33,14 @@ public class CommitViewAdapter extends RecyclerView.Adapter<CommitViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CommitViewHolder holder, int position) {
-        holder.bind(commitInfoList.get(position), mContext);
+        if(commitInfoList != null) {
+            holder.bind(commitInfoList.get(position), mContext);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return commitInfoList.size();
+        return commitInfoList == null ? 0 : commitInfoList.size();
     }
 
     public void setCommitInfoList(List<CommitInfo> data){

@@ -104,7 +104,7 @@ public class FilesFragment extends Fragment {
 
         public FileAdapter(){
             super();
-            files = new ArrayList<>();
+            files = null;
         }
 
         @NonNull
@@ -115,12 +115,14 @@ public class FilesFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull FileViewHolder holder, int position) {
-            holder.bind(files.get(position));
+            if(files != null) {
+                holder.bind(files.get(position));
+            }
         }
 
         @Override
         public int getItemCount() {
-            return files.size();
+            return files == null ? 0 : files.size();
         }
 
         public void setFiles(List<FileContent> files){

@@ -3,6 +3,7 @@ package com.example.review.api.service;
 import com.example.review.api.model.AccessToken;
 import com.example.review.api.model.CommitInfo;
 import com.example.review.api.model.FileContent;
+import com.example.review.api.model.Release;
 import com.example.review.api.model.Repo;
 import com.example.review.api.model.SearchResult;
 import com.example.review.api.model.UserInfo;
@@ -58,6 +59,12 @@ public interface GithubService {
 
     @GET("repos/{repo_name}/contributors")
     Call<List<UserInfo>> getContributors(
+            @Path(value = "repo_name",encoded = true) String repoName,
+            @Header("Authorization") String accessToken
+    );
+
+    @GET("repos/{repo_name}/releases")
+    Call<List<Release>> getReleases(
             @Path(value = "repo_name",encoded = true) String repoName,
             @Header("Authorization") String accessToken
     );
