@@ -41,12 +41,17 @@ public class CommitViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(CommitInfo data, Context context){
         if(data != null){
-            Glide.with(context)
-                    .load(data.getCommitter().getHeadImageUrl())
-                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
-                    .into(mImageView);
+            if(data.getCommitter() != null) {
+                Glide.with(context)
+                        .load(data.getCommitter().getHeadImageUrl())
+                        .apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
+                        .into(mImageView);
 
-            mLoginText.setText(data.getCommitter().getLogin());
+                mLoginText.setText(data.getCommitter().getLogin());
+            }else {
+                mImageView.setForeground(context.getResources().getDrawable(R.drawable.ic_action_user, context.getTheme()));
+                mLoginText.setText("");
+            }
             mDateText.setText(data.getCommit().getCommitter().getDate());
             mMessageText.setText(data.getCommit().getMessage());
             mShaText.setText(data.getSha().substring(0,6));

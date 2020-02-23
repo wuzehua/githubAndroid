@@ -12,4 +12,5 @@
     <color name="privateTagColor">#F44336</color>
     <color name="statBarColor">#000000</color>
     <color name="logoutButtonColor">#CD3028</color>
+    <color name="scrollBarColor">#CCEEEEEE</color>
 </resources>

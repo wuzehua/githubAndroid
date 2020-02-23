@@ -6,8 +6,8 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/meNavigate"
-        android:icon="@drawable/ic_action_user"
-        android:title="Me"/>
+        android:id="@+id/searchNavigate"
+        android:icon="@drawable/ic_action_search"
+        android:title="Search"/>
 
 </menu>

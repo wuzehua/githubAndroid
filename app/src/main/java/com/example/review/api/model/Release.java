@@ -9,6 +9,11 @@ public class Release {
     @SerializedName("name") private String name;
     @SerializedName("published_at") private String publishDate;
     @SerializedName("assets") private List<Asset> assets;
+    @SerializedName("body") private String body;
+
+    public String getBody() {
+        return body;
+    }
 
     public String getName() {
         return name;

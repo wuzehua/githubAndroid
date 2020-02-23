@@ -48,4 +48,12 @@ public class UserViewAdapter extends RecyclerView.Adapter<UserViewHolder> {
         users = data;
     }
 
+    public void addUsers(List<UserInfo> data){
+        if(users == null){
+            users = data;
+        }else {
+            users.addAll(data);
+        }
+    }
+
 }

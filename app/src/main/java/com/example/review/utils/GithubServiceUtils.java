@@ -16,7 +16,7 @@ public class GithubServiceUtils {
     public static final String CLIENT_SECRET = "671f67129c2d67417bac90200a1ee2f0ad66fb62";
     public static final String CALLBACK_URI = "androidgithub://callback";
 
-
+    public static int RESPONSE_COUNT_PER_PAGE = 30;
 
     public static GithubService getGithubService(){
         if(githubService == null){

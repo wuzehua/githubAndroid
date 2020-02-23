@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import com.example.review.R;
 import com.example.review.ui.fragment.BaseFragment;
 import com.example.review.ui.fragment.HomeFragment;
+import com.example.review.utils.PermissionUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -74,9 +74,12 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(Color.TRANSPARENT);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
+        if(!PermissionUtils.isPermissionsReady(this, PermissionUtils.permissions)){
+            PermissionUtils.reuqestPermissions(this, PermissionUtils.permissions, PermissionUtils.WRITE_EXTERNAL_STORAGE_CODE);
+        }
 
 
-        mCurrentFragment = homeFragment;
+        mCurrentFragment = baseFragment;
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -89,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.homeNavigate:{
-                        switchFragment(homeFragment);
+                        switchFragment(baseFragment);
                         break;
                     }
 
-                    case R.id.meNavigate:{
-                        switchFragment(baseFragment);
+                    case R.id.searchNavigate:{
+                        switchFragment(homeFragment);
                         break;
                     }
                 }

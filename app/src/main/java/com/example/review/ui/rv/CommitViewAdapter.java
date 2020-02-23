@@ -47,4 +47,12 @@ public class CommitViewAdapter extends RecyclerView.Adapter<CommitViewHolder> {
         commitInfoList = data;
     }
 
+    public void addCommitInfoList(List<CommitInfo> data){
+        if(commitInfoList == null){
+            commitInfoList = data;
+        }else {
+            commitInfoList.addAll(data);
+        }
+    }
+
 }

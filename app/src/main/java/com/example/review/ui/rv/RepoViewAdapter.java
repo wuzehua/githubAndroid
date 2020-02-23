@@ -47,4 +47,12 @@ public class RepoViewAdapter extends RecyclerView.Adapter<RepoViewHolder> {
         data = newData;
     }
 
+    public void addData(List<Repo> newData){
+        if(data == null){
+            data = newData;
+        }else {
+            data.addAll(newData);
+        }
+    }
+
 }

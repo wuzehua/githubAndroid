@@ -54,7 +54,8 @@ public interface GithubService {
     @GET("repos/{repo_name}/commits")
     Call<List<CommitInfo>> getCommitsInfo(
             @Path(value = "repo_name", encoded = true) String repoName,
-            @Header("Authorization") String accessToken
+            @Header("Authorization") String accessToken,
+            @Query("page") int page
     );
 
     @GET("repos/{repo_name}/contributors")
@@ -85,12 +86,14 @@ public interface GithubService {
     @GET("search/repositories")
     Call<SearchResult<Repo>> getSearchRepos(
             @Query("q") String name,
-            @Header("Authorization") String accessToken
+            @Header("Authorization") String accessToken,
+            @Query("page") int page
     );
 
     @GET("search/users")
     Call<SearchResult<UserInfo>> getSearchUsers(
             @Query("q") String name,
-            @Header("Authorization") String accessToken
+            @Header("Authorization") String accessToken,
+            @Query("page") int page
     );
 }

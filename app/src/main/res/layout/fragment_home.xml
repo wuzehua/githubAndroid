@@ -11,7 +11,7 @@
 
         <TextView
             android:textColor="@color/loginButtonColor"
-            android:text="@string/app_name"
+            android:text="Search"
             android:textSize="24sp"
             android:textStyle="bold"
             android:maxLines="1"

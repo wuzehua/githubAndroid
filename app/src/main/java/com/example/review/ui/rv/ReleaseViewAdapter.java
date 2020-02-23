@@ -40,4 +40,12 @@ public class ReleaseViewAdapter extends RecyclerView.Adapter<ReleaseViewHolder> 
     public void setReleases(List<Release> data){
         releases = data;
     }
+
+    public void addReleases(List<Release> data){
+        if(releases == null){
+            releases = data;
+        }else {
+            releases.addAll(data);
+        }
+    }
 }

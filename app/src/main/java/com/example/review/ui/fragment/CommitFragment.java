@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.review.R;
 import com.example.review.api.model.CommitInfo;
-import com.example.review.api.service.GithubService;
 import com.example.review.ui.rv.CommitViewAdapter;
 import com.example.review.utils.GithubServiceUtils;
 
@@ -31,6 +31,8 @@ public class CommitFragment extends Fragment {
     private CommitViewAdapter mAdapter;
     private String accessToken;
     private boolean hasLoaded;
+    private int requestPage;
+    private boolean isTheEnd;
 
     public static CommitFragment newInstance(@NonNull String fullName) {
 
@@ -51,6 +53,8 @@ public class CommitFragment extends Fragment {
         super.onCreate(savedInstanceState);
         hasLoaded = false;
         repoFullName = getArguments().getString("fullName");
+        requestPage = 1;
+        isTheEnd = false;
     }
 
 
@@ -68,10 +72,28 @@ public class CommitFragment extends Fragment {
 
         accessToken = getActivity().getSharedPreferences("loginStat", Context.MODE_PRIVATE).getString("accessToken","");
 
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()){
+                    if(!isTheEnd){
+                        refreshLayout.setRefreshing(true);
+                        fetchData(true);
+                    }else {
+                        Toast.makeText(recyclerView.getContext(), "The end", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchData();
+                requestPage = 1;
+                isTheEnd = false;
+                fetchData(false);
             }
         });
         return view;
@@ -82,17 +104,29 @@ public class CommitFragment extends Fragment {
         super.onResume();
         if(!hasLoaded){
             refreshLayout.setRefreshing(true);
-            fetchData();
+            fetchData(false);
         }
     }
 
-    private void fetchData(){
-        Call<List<CommitInfo>> call = GithubServiceUtils.getGithubApiService().getCommitsInfo(repoFullName, accessToken);
+    private void fetchData(final boolean more){
+        Call<List<CommitInfo>> call = GithubServiceUtils.getGithubApiService().getCommitsInfo(repoFullName, accessToken, requestPage);
         call.enqueue(new Callback<List<CommitInfo>>() {
             @Override
             public void onResponse(Call<List<CommitInfo>> call, Response<List<CommitInfo>> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    mAdapter.setCommitInfoList(response.body());
+
+                    if(response.body().size() < GithubServiceUtils.RESPONSE_COUNT_PER_PAGE){
+                        isTheEnd = true;
+                    }
+
+                    if(more){
+                        mAdapter.addCommitInfoList(response.body());
+                    }else {
+                        mAdapter.setCommitInfoList(response.body());
+                    }
+
+                    requestPage += 1;
+
                     mAdapter.notifyDataSetChanged();
                     hasLoaded = true;
                 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.review.R;
 import com.example.review.api.service.GithubService;
@@ -25,6 +26,8 @@ public class SearchResultFragment extends Fragment {
     protected boolean isInteractive;
     protected boolean isRequesting;
     protected String accessToken;
+    protected boolean isTheEnd;
+    protected int requestPage;
 
     public static SearchResultFragment newInstance() {
 
@@ -46,6 +49,8 @@ public class SearchResultFragment extends Fragment {
         hasRequest = false;
         isRequesting = false;
         mSearchContent = "";
+        isTheEnd = false;
+        requestPage = 1;
     }
 
     @Nullable
@@ -60,7 +65,24 @@ public class SearchResultFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fetchData();
+                requestPage = 1;
+                isTheEnd = false;
+                fetchData(false);
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()) {
+                    if (!isTheEnd) {
+                        mRefreshLayout.setRefreshing(true);
+                        fetchData(true);
+                    } else {
+                        Toast.makeText(recyclerView.getContext(), "The end", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -73,7 +95,9 @@ public class SearchResultFragment extends Fragment {
         isInteractive = true;
         if(hasRequest && !isRequesting){
             mRefreshLayout.setRefreshing(true);
-            fetchData();
+            requestPage = 1;
+            isTheEnd = false;
+            fetchData(false);
         }
     }
 
@@ -88,13 +112,15 @@ public class SearchResultFragment extends Fragment {
             mSearchContent = searchContent;
             hasRequest = true;
             if (isInteractive) {
+                isTheEnd = false;
+                requestPage = 1;
                 mRefreshLayout.setRefreshing(true);
-                fetchData();
+                fetchData(false);
             }
         }
     }
 
-    protected void fetchData(){
+    protected void fetchData(final boolean more){
         isRequesting = true;
     }
 

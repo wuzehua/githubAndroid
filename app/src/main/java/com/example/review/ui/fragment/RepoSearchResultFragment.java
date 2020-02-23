@@ -48,17 +48,28 @@ public class RepoSearchResultFragment extends  SearchResultFragment {
     }
 
     @Override
-    protected void fetchData() {
-        super.fetchData();
-        Call<SearchResult<Repo>> call = GithubServiceUtils.getGithubApiService().getSearchRepos(mSearchContent, accessToken);
+    protected void fetchData(final boolean more) {
+        super.fetchData(more);
+        Call<SearchResult<Repo>> call = GithubServiceUtils.getGithubApiService().getSearchRepos(mSearchContent, accessToken, requestPage);
 
         call.enqueue(new Callback<SearchResult<Repo>>() {
             @Override
             public void onResponse(Call<SearchResult<Repo>> call, Response<SearchResult<Repo>> response) {
                 if(response.isSuccessful() && response.body() != null){
+
+                    if(response.body().getItems().size() < GithubServiceUtils.RESPONSE_COUNT_PER_PAGE){
+                        isTheEnd = true;
+                    }
+
                     hasRequest = false;
-                    mAdapter.setData(response.body().getItems());
+
+                    if(more){
+                        mAdapter.addData(response.body().getItems());
+                    }else {
+                        mAdapter.setData(response.body().getItems());
+                    }
                     mAdapter.notifyDataSetChanged();
+                    requestPage += 1;
                 }
                 isRequesting = false;
                 mRefreshLayout.setRefreshing(false);

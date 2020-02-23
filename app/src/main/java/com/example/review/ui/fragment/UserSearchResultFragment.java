@@ -51,18 +51,29 @@ public class UserSearchResultFragment extends SearchResultFragment {
     }
 
     @Override
-    protected void fetchData() {
-        super.fetchData();
+    protected void fetchData(final boolean more) {
+        super.fetchData(more);
         Call<SearchResult<UserInfo>> call = GithubServiceUtils.getGithubApiService()
-                                                .getSearchUsers(mSearchContent, accessToken);
+                                                .getSearchUsers(mSearchContent, accessToken, requestPage);
 
         call.enqueue(new Callback<SearchResult<UserInfo>>() {
             @Override
             public void onResponse(Call<SearchResult<UserInfo>> call, Response<SearchResult<UserInfo>> response) {
                 if(response.isSuccessful() && response.body() != null){
+
+                    if(response.body().getItems().size() < GithubServiceUtils.RESPONSE_COUNT_PER_PAGE){
+                        isTheEnd = true;
+                    }
+
                     hasRequest = false;
-                    mAdapter.setUsers(response.body().getItems());
+
+                    if(more){
+                        mAdapter.addUsers(response.body().getItems());
+                    }else {
+                        mAdapter.setUsers(response.body().getItems());
+                    }
                     mAdapter.notifyDataSetChanged();
+                    requestPage += 1;
                 }
 
                 mRefreshLayout.setRefreshing(false);
