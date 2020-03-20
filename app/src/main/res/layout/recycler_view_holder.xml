@@ -1,97 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:paddingVertical="14dp"
-    android:paddingHorizontal="18dp"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/repoConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/repoLinearLayout"
-    android:background="?attr/selectableItemBackground">
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="10dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:paddingRight="5dp"
-            android:maxEms="10"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:id="@+id/repoName"
-            android:textSize="18sp"
-            android:paddingBottom="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/titleTextColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:paddingHorizontal="3dp"
-            android:paddingVertical="1dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/privateTagText"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
 
     <TextView
-        android:ems="50"
+        android:id="@+id/repoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:ellipsize="end"
-        android:textSize="14sp"
+        android:maxEms="10"
+        android:maxLines="1"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/titleTextColor"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        app:layout_constraintBaseline_toBaselineOf="@+id/repoName"
+        android:id="@+id/privateTagText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:paddingHorizontal="3dp"
+        android:paddingVertical="1dp"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/repoName" />
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/repoName"
+        android:layout_marginHorizontal="10dp"
         android:id="@+id/repoDescription"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:ems="50"
+        android:textSize="14sp" />
 
-    <LinearLayout
-        android:paddingTop="5dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/starImage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:foreground="@drawable/ic_action_star"
+        app:layout_constraintLeft_toLeftOf="@+id/repoName"
+        app:layout_constraintTop_toBottomOf="@+id/repoDescription" />
 
-        <ImageView
-            android:foreground="@drawable/ic_action_star"
-            android:layout_width="15dp"
-            android:layout_height="15dp"/>
+    <TextView
+        android:id="@+id/starCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="15dp"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/starImage"
+        app:layout_constraintTop_toBottomOf="@+id/repoDescription" />
 
-        <TextView
-            android:paddingStart="5dp"
-            android:paddingEnd="15dp"
-            android:textSize="12sp"
-            android:id="@+id/starCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <ImageView
+        android:id="@+id/forkImage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="5dp"
+        android:foreground="@drawable/ic_action_fork"
+        app:layout_constraintLeft_toRightOf="@+id/starCount"
+        app:layout_constraintTop_toBottomOf="@+id/repoDescription" />
 
-        <ImageView
-            android:foreground="@drawable/ic_action_fork"
-            android:layout_width="15dp"
-            android:layout_height="15dp"/>
 
-        <TextView
-            android:paddingStart="5dp"
-            android:paddingEnd="15dp"
-            android:textSize="12sp"
-            android:id="@+id/forkCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/forkCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="15dp"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/forkImage"
+        app:layout_constraintTop_toBottomOf="@+id/repoDescription" />
 
-        <TextView
-            android:paddingHorizontal="15dp"
-            android:textSize="12sp"
-            android:id="@+id/languageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/languageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingHorizontal="15dp"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@+id/forkCount"
+        app:layout_constraintTop_toBottomOf="@+id/repoDescription" />
 
-        <TextView
-            android:id="@+id/licenseText"
-            android:paddingHorizontal="15dp"
-            android:textSize="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/licenseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingHorizontal="15dp"
+        android:textSize="12sp"
+        app:layout_constraintLeft_toRightOf="@id/languageText"
+        app:layout_constraintTop_toBottomOf="@+id/repoDescription" />
 
-    </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

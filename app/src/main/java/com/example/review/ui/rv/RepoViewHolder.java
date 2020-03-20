@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.review.R;
@@ -26,7 +26,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
     private TextView mForkCount;
     private TextView mLanguageText;
     private TextView mPrivateText;
-    private LinearLayout mLinearLayout;
+    private ConstraintLayout mConstraintLayout;
     private TextView mLicenseText;
 
 
@@ -42,7 +42,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
         mForkCount = itemView.findViewById(R.id.forkCount);
         mLanguageText = itemView.findViewById(R.id.languageText);
         mPrivateText = itemView.findViewById(R.id.privateTagText);
-        mLinearLayout = itemView.findViewById(R.id.repoLinearLayout);
+        mConstraintLayout = itemView.findViewById(R.id.repoConstraintLayout);
         mLicenseText = itemView.findViewById(R.id.licenseText);
     }
 
@@ -74,7 +74,7 @@ public class RepoViewHolder extends RecyclerView.ViewHolder {
                 mLicenseText.setText(data.getLicense().getKey().toUpperCase());
             }
 
-            mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            mConstraintLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), ContentActivity.class);
